@@ -1,67 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vihaan Sriram</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p0sZ7ZZh6X7G9FtS5O3ZcC1Q5Jt23y0CwUY8rJ1EtvZW2U4E4x3g6bXAt4ToaV7UclcUKJ8lRrYIxZm8U5mUPA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    :root {
+      --bg-color: #0d0d0d;
+      --text-color: #ffffff;
+      --accent: #4ade80;
+    }
+
+    body.light-mode {
+      --bg-color: #ffffff;
+      --text-color: #0d0d0d;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      padding: 2rem;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    .toggle-mode {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      animation: fadeInDown 1.5s ease;
+    }
+
+    .typing {
+      font-size: 2rem;
+      margin-top: 1rem;
+      min-height: 2.5rem;
+      color: var(--accent);
+    }
+
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section {
+      margin-bottom: 2.5rem;
+      animation: fadeIn 2s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .project {
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem 0;
+      background-color: rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease, background 0.3s;
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+      background: rgba(74, 222, 128, 0.1);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .socials a {
+      margin-right: 10px;
+      font-size: 1.5rem;
+    }
+
+    .footer {
+      text-align: center;
+      padding-top: 3rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  </style>
 </head>
+
 <body>
-  <div class="toggle-container">
-    <button id="modeToggle">Toggle Mode</button>
+  <button class="toggle-mode" onclick="toggleMode()">Toggle Theme</button>
+  <div class="header">
+    <h1>Vihaan Sriram</h1>
+    <p class="typing" id="typing"></p>
   </div>
 
-  <section class="intro">
-    <h1 class="typing" id="typingText"></h1>
-    <p class="subtext">Hey! I’m Vihaan — 17, mildly chaotic, accidentally funny on most days 😎</p>
-  </section>
+  <div class="section">
+    <h2>About Me</h2>
+    <p>Hey! I’m Vihaan — 17, mildly chaotic, and accidentally funny on most days 😎<br>
+      Future judge 👨‍⚖️ (manifesting), current student 📚, part-time dreamer 🌌, full-time snack enthusiast 🍟<br>
+      I like bikes 🏍️, anime 🤓, law ⚖️, saving the planet 🌍, and winning imaginary arguments in the shower 🚿<br>
+      Fitness goals? Working on my six-pack (of brownies) 🍫<br>
+      Social skills? Amazing on calls 📞… absolutely allergic to texts 💬🚫<br>
+      Basically, I’m just a soon-to-be adult trying to look cool while I Google “how to be an adult” 🧠💥<br>
+      Stick around — I promise things get weirdly awesome ✨
+    </p>
+  </div>
 
-  <section class="projects">
-    <h2>My Projects</h2>
+  <div class="section">
+    <h2>Projects</h2>
 
     <div class="project">
       <a href="https://github.com/VihaanToTheRescue/Unit-Converter-Application" target="_blank">Unit Converter</a>
-      <p>A GUI tool using PyQt5 for versatile and user-friendly unit conversions.</p>
+      <p>A versatile and user-friendly conversion tool built with PyQt5.</p>
     </div>
 
     <div class="project">
       <a href="https://github.com/VihaanToTheRescue/number-guessing-game" target="_blank">Number Guessing Game</a>
-      <p>A simple tkinter-based game that challenges you to guess a number.</p>
+      <p>A simple GUI-based guessing game made with Tkinter.</p>
     </div>
 
     <div class="project">
       <a href="https://medium.com/@vihaanaadira11/the-future-of-legal-liability-in-the-age-of-autonomous-vehicles-whos-really-responsible-5de1079b9cdd" target="_blank">Legal Liability & Autonomous Vehicles</a>
-      <p>Explores who is legally responsible in the age of self-driving cars.</p>
+      <p>Exploring accountability in AI-driven transportation.</p>
     </div>
 
     <div class="project">
       <a href="https://www.ijraset.com/research-paper/assessing-the-impact-of-limited-access-on-irula-women-in-thethampakkam-pondicherry" target="_blank">Water Sustainability & Irula Women</a>
-      <p>Research on water access and its impact on marginalized women in Pondicherry.</p>
+      <p>Impact study on limited access to water in Pondicherry.</p>
     </div>
 
     <div class="project">
-      <a href="https://www.lawaudience.com/navigating-the-intersection-of-artificial-intelligence-and-intellectual-property-challenges-and-opportunities/" target="_blank">AI and Intellectual Property</a>
-      <p>Challenges and opportunities in the overlap between AI and IP law.</p>
+      <a href="https://www.lawaudience.com/navigating-the-intersection-of-artificial-intelligence-and-intellectual-property-challenges-and-opportunities/" target="_blank">AI & Intellectual Property</a>
+      <p>Challenges at the junction of AI and IP laws.</p>
     </div>
 
     <div class="project">
-      <a href="https://ijlsi.com/paper/plastic-waste-and-the-law-strengthening-epr-to-combat-indias-growing-crisis/" target="_blank">Plastic Waste & the Law</a>
-      <p>How EPR can help India battle plastic pollution effectively.</p>
+      <a href="https://ijlsi.com/paper/plastic-waste-and-the-law-strengthening-epr-to-combat-indias-growing-crisis/" target="_blank">Plastic Waste & Law</a>
+      <p>Strengthening EPR to fight India’s plastic crisis.</p>
     </div>
 
     <div class="project">
-      <a href="https://www.youtube.com/watch?v=jhJhrAJoLzs" target="_blank">Ocean Cleanup Video (Award Winning)</a>
-      <p>National award-winning video made for Wipro Earthian on ocean conservation.</p>
+      <a href="https://www.youtube.com/watch?v=jhJhrAJoLzs" target="_blank">Award-Winning Ocean Cleanliness Video</a>
+      <p>A national award-winning video made for Wipro Earthian on ocean preservation in Pondicherry.</p>
     </div>
-  </section>
+  </div>
 
-  <section class="socials">
-    <h2>Contact Me</h2>
-    <p>Email: <a href="mailto:vihaanaadira11@gmail.com">vihaanaadira11@gmail.com</a></p>
-    <p>Instagram: <a href="https://instagram.com/vihaan.sriram" target="_blank">@vihaan.sriram</a></p>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/vihaan-sriram-1675b2236/" target="_blank">Vihaan Sriram</a></p>
-  </section>
+  <div class="section socials">
+    <h2>Contact</h2>
+    <a href="mailto:vihaanaadira11@gmail.com"><i class="fas fa-envelope"></i></a>
+    <a href="https://www.linkedin.com/in/vihaan-sriram-1675b2236/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="https://instagram.com/vihaan.sriram" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
 
-  <script src="script.js"></script>
+  <div class="footer">
+    Made with 💚 by Vihaan Sriram
+  </div>
+
+  <script>
+    const messages = [
+      "Techie. Law Enthusiast. Biker. Environmentalist.",
+      "CLAT Aspirant and Coding Geek",
+      "Saving the planet, one byte at a time 🌱"
+    ];
+    let index = 0, charIndex = 0, deleting = false;
+
+    function type() {
+      const typingElement = document.getElementById("typing");
+      if (!deleting && charIndex <= messages[index].length) {
+        typingElement.innerHTML = messages[index].substring(0, charIndex++) + "|";
+        setTimeout(type, 80);
+      } else if (deleting && charIndex >= 0) {
+        typingElement.innerHTML = messages[index].substring(0, charIndex--) + "|";
+        setTimeout(type, 40);
+      } else {
+        deleting = !deleting;
+        if (!deleting) index = (index + 1) % messages.length;
+        setTimeout(type, 1000);
+      }
+    }
+    type();
+
+    function toggleMode() {
+      document.body.classList.toggle("light-mode");
+    }
+  </script>
 </body>
+
 </html>
