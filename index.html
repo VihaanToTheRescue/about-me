@@ -72,10 +72,11 @@
 
     .section {
       margin-bottom: 2.5rem;
-      animation: fadeIn 2s ease;
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
     }
 
-    @keyframes fadeIn {
+    @keyframes fadeInUp {
       from {
         opacity: 0;
         transform: translateY(40px);
@@ -106,8 +107,13 @@
     }
 
     .socials a {
-      margin-right: 10px;
-      font-size: 1.5rem;
+      margin: 0 15px;
+      font-size: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .socials a:hover {
+      transform: scale(1.2);
     }
 
     .footer {
@@ -179,9 +185,10 @@
 
   <div class="section socials">
     <h2>Contact</h2>
-    <a href="mailto:vihaanaadira11@gmail.com"><i class="fas fa-envelope"></i></a>
-    <a href="https://www.linkedin.com/in/vihaan-sriram-1675b2236/" target="_blank"><i class="fab fa-linkedin"></i></a>
-    <a href="https://instagram.com/vihaan.sriram" target="_blank"><i class="fab fa-instagram"></i></a>
+    <p>Let's connect! Feel free to reach out via email or follow me on social media.</p>
+    <a href="mailto:vihaanaadira11@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+    <a href="https://www.linkedin.com/in/vihaan-sriram-1675b2236/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+    <a href="https://instagram.com/vihaan.sriram" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
   </div>
 
   <div class="footer">
@@ -215,6 +222,21 @@
     function toggleMode() {
       document.body.classList.toggle("light-mode");
     }
+
+    // Trigger animation for each section when in view
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = 1;
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+
+    sections.forEach(section => observer.observe(section));
   </script>
 </body>
 
