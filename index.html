@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Vihaan Sriram's portfolio showcasing projects in tech, law, and environmental sustainability." />
-  <meta name="keywords" content="Vihaan Sriram, portfolio, technology, law, environment, programming" />
-  <meta name="author" content="Vihaan Sriram" />
-  <title>Vihaan&nbsp;Sriram</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQov1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vihaan Sriram's portfolio showcasing projects in tech, law, and environmental sustainability.">
+  <meta name="keywords" content="Vihaan Sriram, portfolio, technology, law, environment, programming">
+  <meta name="author" content="Vihaan Sriram">
+  <title>Vihaan Sriram</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-color: #0d0d0d;
       --text-color: #ffffff;
+      --accent: #4ade80;
+    }
+
+    :root[data-theme="light"] {
+      --bg-color: #f5f5f5;
+      --text-color: #333333;
       --accent: #4ade80;
     }
 
@@ -31,6 +36,7 @@
       padding: 2rem;
       position: relative;
       overflow-x: hidden;
+      transition: background-color 0.5s ease, color 0.5s ease;
     }
 
     #matrix-bg {
@@ -41,13 +47,27 @@
       height: 100%;
       z-index: -1;
       filter: brightness(0.3) opacity(0.2);
-      pointer-events: none;
-      animation: pulseMatrix 5s infinite ease-in-out;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: filter 0.5s ease;
+    }
+
+    :root[data-theme="light"] #matrix-bg {
+      filter: brightness(0.5) opacity(0.3);
     }
 
     @keyframes pulseMatrix {
       0%, 100% { filter: brightness(0.3) opacity(0.2); }
       50% { filter: brightness(0.35) opacity(0.25); }
+    }
+
+    :root[data-theme="light"] #matrix-bg {
+      animation: pulseMatrixLight 5s infinite ease-in-out;
+    }
+
+    @keyframes pulseMatrixLight {
+      0%, 100% { filter: brightness(0.5) opacity(0.3); }
+      50% { filter: brightness(0.55) opacity(0.35); }
     }
 
     #matrix-splash {
@@ -57,7 +77,7 @@
       width: 100%;
       height: 100%;
       z-index: 1000;
-      background: #000;
+      background: var(--bg-color);
       opacity: 1;
       transition: opacity 1s ease;
     }
@@ -90,6 +110,23 @@
       animation: letterFade 0.5s ease forwards;
     }
 
+    .theme-toggle {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    .theme-toggle svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: var(--accent);
+      transition: fill 0.5s ease;
+    }
+
     @keyframes letterFade {
       to {
         opacity: 1;
@@ -106,6 +143,7 @@
       color: var(--accent);
       display: block;
       text-align: center;
+      transition: color 0.5s ease;
     }
 
     .cursor {
@@ -151,6 +189,7 @@
       position: relative;
       display: inline-block;
       margin-bottom: 1rem;
+      transition: color 0.5s ease;
     }
 
     .section h2::after {
@@ -172,6 +211,7 @@
       opacity: 0;
       animation: fadeInContent 1s ease forwards;
       animation-delay: 0.8s;
+      transition: color 0.5s ease;
     }
 
     @keyframes fadeInContent {
@@ -195,10 +235,15 @@
       border-radius: 10px;
       margin: 1rem 0;
       background-color: rgba(255, 255, 255, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+      transition: transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease, background-color 0.5s ease;
       position: relative;
       z-index: 10;
       opacity: 0;
+      transform-style: preserve-3d;
+    }
+
+    :root[data-theme="light"] .project {
+      background-color: rgba(0, 0, 0, 0.05);
     }
 
     .project:nth-child(odd) {
@@ -240,10 +285,20 @@
     }
 
     .project:hover {
-      transform: scale(1.05);
-      box-shadow: 0 4px 20px rgba(74, 222, 128, 0.4);
+      transform: rotateY(180deg) scale(1.2);
+      box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
       border: 1px solid transparent;
       background: linear-gradient(45deg, rgba(74, 222, 128, 0.2), rgba(255, 255, 255, 0.1));
+      animation: glowPulse 1s infinite ease-in-out;
+    }
+
+    :root[data-theme="light"] .project:hover {
+      background: linear-gradient(45deg, rgba(74, 222, 128, 0.2), rgba(0, 0, 0, 0.1));
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.6); }
+      50% { box-shadow: 0 0 30px rgba(74, 222, 128, 0.8); }
     }
 
     .project a {
@@ -251,16 +306,61 @@
       padding: 1.5rem;
       color: inherit;
       text-decoration: none;
+      position: relative;
+      z-index: 1;
+      backface-visibility: hidden;
     }
 
     .project a h3 {
       color: var(--accent);
       margin-bottom: 0.5rem;
+      transform: translateY(0);
+      opacity: 0.8;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .project a p {
+      transform: translateY(0);
+      opacity: 0.8;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .project:hover a h3,
+    .project:hover a p {
+      transform: translateY(-10px);
+      opacity: 1;
+    }
+
+    .flip-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(74, 222, 128, 0.3);
+      display: none;
+      backface-visibility: hidden;
+      z-index: 0;
+    }
+
+    .project:hover .flip-overlay {
+      display: block;
+    }
+
+    .binary-canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    @keyframes binaryRain {
+      0% { transform: translateY(-100%); opacity: 1; }
+      100% { transform: translateY(100%); opacity: 0; }
     }
 
     a:not(.project a) {
       color: var(--accent);
       text-decoration: none;
+      transition: color 0.5s ease;
     }
 
     .socials {
@@ -291,10 +391,28 @@
       color: var(--accent);
     }
 
-    .socials a i {
-      font-size: 2rem;
+    .socials a svg {
+      width: 2rem;
+      height: 2rem;
+      fill: var(--accent);
+      stroke: var(--accent);
+      transition: fill 0.5s ease, stroke 0.5s ease;
+    }
+
+    .socials a .fallback {
+      display: none;
+      font-size: 1rem;
       color: var(--accent);
-      display: inline-block;
+      margin-left: 0.5rem;
+      transition: color 0.5s ease;
+    }
+
+    .socials a.no-icons .fallback {
+      display: inline;
+    }
+
+    .socials a.no-icons svg {
+      display: none;
     }
 
     .socials a:hover {
@@ -316,6 +434,7 @@
       z-index: 10;
       animation: slideUpFooter 1s ease forwards;
       animation-delay: 1s;
+      transition: color 0.5s ease;
     }
 
     @keyframes slideUpFooter {
@@ -339,12 +458,27 @@
         word-spacing: 10px;
       }
 
+      .theme-toggle {
+        top: 0.5rem;
+        right: 0.5rem;
+      }
+
+      .theme-toggle svg {
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+
       .project a {
         padding: 1rem;
       }
 
-      .socials a i {
-        font-size: 1.5rem;
+      .socials a svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      .socials a .fallback {
+        font-size: 0.9rem;
       }
     }
 
@@ -357,10 +491,27 @@
       .section p:not(.typing),
       .footer,
       .cursor,
+      .project:hover,
       #matrix-bg {
         animation: none;
         opacity: 1;
         transform: none;
+      }
+
+      .project:hover a h3,
+      .project:hover a p {
+        transform: none;
+        opacity: 1;
+      }
+
+      .project:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
+      }
+
+      .flip-overlay,
+      .project:hover .flip-overlay {
+        display: none;
       }
     }
   </style>
@@ -370,18 +521,24 @@
   <canvas id="matrix-splash"></canvas>
   <canvas id="matrix-bg"></canvas>
   <div class="header">
-    <h1 id="header-name">Vihaan&nbsp;Sriram</h1>
+    <h1 id="header-name">Vihaan Sriram</h1>
+    <button class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="theme-icon">
+        <path fill="#4ade80" d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"/>
+      </svg>
+    </button>
     <p class="typing" id="typing"></p>
   </div>
 
   <div class="section">
     <h2>About Me</h2>
-    <p>Meet Vihaan, your 17-year-old chaos captain, accidentally cracking jokes while tripping over life’s instruction manual.<br>
-      I’m knee-deep in coding apps, saving the planet one recycled bottle at a time, and biking like I’m auditioning for a Hollywood blockbuster.<br>
-      Law’s my jam—I’m basically prepping to outsmart everyone in a courtroom, minus any snack-related distractions.<br>
-      Anime binges fuel my late-night coding sprees, and my fitness routine? Sprinting to the fridge for the last slice of pizza.<br>
-      Social skills? Stellar on calls, but texts? I’d rather wrestle a bear.<br>
-      Adulting’s a mystery I’m solving one Google search at a time. Hang tight—this ride’s a laugh riot with a tech twist.<br>
+    <p>Yo, I’m Vihaan, a 17-year-old dodging adulting like it’s a pop-up ad.<br>
+      I code apps when my Wi-Fi isn’t throwing a tantrum, bike to save the planet (or outrun my to-do list), and study law to win arguments with traffic lights.<br>
+      My brain’s 80% bad puns, 20% caffeine, and I survive on snacks and sheer chaos.<br>
+      Fitness? I sprint to the fridge during ad breaks.<br>
+      Social skills? I’m a face-to-face charmer and call-crushing pro, but chats and family functions turn me into a buffering robot—send pizza, stat.<br>
+      I’m saving the environment one reusable straw at a time while pretending I’ve got life figured out.<br>
+      Spoiler: I don’t, but I’m faking it with style.<br>
     </p>
   </div>
 
@@ -391,42 +548,63 @@
       <a href="https://github.com/VihaanToTheRescue/Unit-Converter-Application" target="_blank">
         <h3>Unit Converter</h3>
         <p>A versatile and user-friendly conversion tool built with PyQt5.</p>
+        <div class="flip-overlay">
+          <canvas class="binary-canvas"></canvas>
+        </div>
       </a>
     </div>
     <div class="project">
       <a href="https://github.com/VihaanToTheRescue/number-guessing-game" target="_blank">
         <h3>Number Guessing Game</h3>
         <p>A simple GUI-based guessing game made with Tkinter.</p>
+        <div class="flip-overlay">
+          <canvas class="binary-canvas"></canvas>
+        </div>
       </a>
     </div>
     <div class="project">
       <a href="https://medium.com/@vihaanaadira11/the-future-of-legal-liability-in-the-age-of-autonomous-vehicles-whos-really-responsible-5de1079b9cdd" target="_blank">
         <h3>Legal Liability & Autonomous Vehicles</h3>
         <p>Exploring accountability in AI-driven transportation.</p>
+        <div class="flip-overlay">
+          <canvas class="binary-canvas"></canvas>
+        </div>
       </a>
     </div>
     <div class="project">
       <a href="https://www.ijraset.com/research-paper/assessing-the-impact-of-limited-access-on-irula-women-in-thethampakkam-pondicherry" target="_blank">
         <h3>Water Sustainability & Irula Women</h3>
         <p>Impact study on limited access to water in Pondicherry.</p>
+        <div class="flip-overlay">
+          <canvas class="binary-canvas"></canvas>
+        </div>
       </a>
     </div>
     <div class="project">
       <a href="https://www.lawaudience.com/navigating-the-intersection-of-artificial-intelligence-and-intellectual-property-challenges-and-opportunities/" target="_blank">
         <h3>AI & Intellectual Property</h3>
         <p>Challenges at the junction of AI and IP laws.</p>
+        <div class="flip-overlay">
+          <canvas class="binary-canvas"></canvas>
+        </div>
       </a>
     </div>
     <div class="project">
       <a href="https://ijlsi.com/paper/plastic-waste-and-the-law-strengthening-epr-to-combat-indias-growing-crisis/" target="_blank">
         <h3>Plastic Waste & Law</h3>
         <p>Strengthening EPR to fight India’s plastic crisis.</p>
+        <div class="flip-overlay">
+          <canvas class="binary-canvas"></canvas>
+        </div>
       </a>
     </div>
     <div class="project">
       <a href="https://www.youtube.com/watch?v=jhJhrAJoLzs" target="_blank">
         <h3>Award-Winning Ocean Cleanliness Video</h3>
         <p>A national award-winning video made for Wipro Earthian on ocean preservation in Pondicherry.</p>
+        <div class="flip-overlay">
+          <canvas class="binary-canvas"></canvas>
+        </div>
       </a>
     </div>
   </div>
@@ -435,9 +613,24 @@
     <h2>Contact</h2>
     <p>Let's connect! Feel free to reach out via email or follow me on social media.</p>
     <div class="socials-icons">
-      <a href="mailto:vihaanaadira11@gmail.com" title="Email" aria-label="Send email to Vihaan Sriram">Email <i class="fa-solid fa-envelope"></i></a>
-      <a href="https://www.linkedin.com/in/vihaan-sriram-1675b2236/" target="_blank" title="LinkedIn" aria-label="Visit Vihaan Sriram's LinkedIn profile">LinkedIn <i class="fa-brands fa-linkedin"></i></a>
-      <a href="https://instagram.com/vihaan.sriram" target="_blank" title="Instagram" aria-label="Visit Vihaan Sriram's Instagram profile">Instagram <i class="fa-brands fa-instagram"></i></a>
+      <a href="mailto:vihaanaadira11@gmail.com" title="Email" aria-label="Send email to Vihaan Sriram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="#4ade80" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"/>
+        </svg>
+        <span class="fallback">Email</span>
+      </a>
+      <a href="https://www.linkedin.com/in/vihaan-sriram-1675b2236/" target="_blank" title="LinkedIn" aria-label="Visit Vihaan Sriram's LinkedIn profile">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+          <path fill="#4ade80" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
+        </svg>
+        <span class="fallback">LinkedIn</span>
+      </a>
+      <a href="https://instagram.com/vihaan.sriram" target="_blank" title="Instagram" aria-label="Visit Vihaan Sriram's Instagram profile">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+          <path fill="#4ade80" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.8 9.9 67.6 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+        </svg>
+        <span class="fallback">Instagram</span>
+      </a>
     </div>
   </div>
 
@@ -528,27 +721,133 @@
 
     // Header letter animation
     const headerName = document.getElementById("header-name");
-    const headerText = headerName.innerHTML.replace('&nbsp;', ' ');
+    const headerText = headerName.textContent;
     headerName.innerHTML = headerText.split("").map((char, i) => 
-      `<span style="animation-delay: ${i * 0.05}s">${char === " " ? "&nbsp;" : char}</span>`
+      `<span style="animation-delay: ${i * 0.05}s">${char === String.fromCharCode(160) ? String.fromCharCode(160) : char}</span>`
     ).join("");
 
-    // Check if Font Awesome loaded
-    window.addEventListener('load', () => {
-      try {
-        const brandIcon = document.querySelector('.fa-brands.fa-linkedin');
-        const solidIcon = document.querySelector('.fa-solid.fa-envelope');
-        const isBrandsLoaded = brandIcon && brandIcon.offsetWidth > 0;
-        const isSolidLoaded = solidIcon && solidIcon.offsetWidth > 0;
-        console.log('Font Awesome brands loaded:', isBrandsLoaded);
-        console.log('Font Awesome solid loaded:', isSolidLoaded);
-        if (!isBrandsLoaded || !isSolidLoaded) {
-          console.warn('Font Awesome icons not visible; check CDN or CSS');
+    // Project binary rain effect
+    const projects = document.querySelectorAll(".project");
+    projects.forEach(project => {
+      const canvas = project.querySelector(".binary-canvas");
+      const ctx = canvas.getContext("2d");
+      let animationFrame;
+
+      function startBinaryRain() {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        canvas.width = project.offsetWidth;
+        canvas.height = project.offsetHeight;
+        const fontSize = 12;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = Array(columns).fill(0);
+
+        function draw() {
+          ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#4ade80";
+          ctx.font = `${fontSize}px monospace`;
+
+          for (let i = 0; i < drops.length; i++) {
+            const text = Math.random() > 0.5 ? "0" : "1";
+            const x = i * fontSize;
+            const y = drops[i] * fontSize;
+            ctx.fillText(text, x, y);
+            drops[i]++;
+            if (y > canvas.height && Math.random() > 0.95) drops[i] = 0;
+          }
+          animationFrame = requestAnimationFrame(draw);
         }
-      } catch (error) {
-        console.error('Font Awesome load failed:', error);
+        draw();
       }
+
+      function stopBinaryRain() {
+        if (animationFrame) cancelAnimationFrame(animationFrame);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      project.addEventListener("mouseenter", startBinaryRain);
+      project.addEventListener("mouseleave", stopBinaryRain);
     });
+
+    // Matrix easter egg
+    const matrixBg = document.getElementById("matrix-bg");
+    let lastClick = 0;
+    matrixBg.addEventListener("click", (e) => {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        console.log("Matrix easter egg clicked!");
+        return;
+      }
+
+      const now = Date.now();
+      if (now - lastClick < 500) return;
+      lastClick = now;
+
+      const tempCanvas = document.createElement("canvas");
+      tempCanvas.style.position = "fixed";
+      tempCanvas.style.zIndex = "0";
+      tempCanvas.width = 200;
+      tempCanvas.height = 200;
+      tempCanvas.style.left = `${e.clientX - 100}px`;
+      tempCanvas.style.top = `${e.clientY - 100}px`;
+      document.body.appendChild(tempCanvas);
+
+      const ctx = tempCanvas.getContext("2d");
+      const particles = Array.from({ length: 25 }, () => ({
+        x: 100,
+        y: 100,
+        angle: Math.random() * Math.PI * 2,
+        speed: 50 + Math.random() * 50,
+        char: Math.random() > 0.5 ? "1" : "0",
+        opacity: 1,
+        scale: 1
+      }));
+
+      let startTime = null;
+      function animate(time) {
+        if (!startTime) startTime = time;
+        const elapsed = (time - startTime) / 1000;
+        ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        particles.forEach(p => {
+          p.x += Math.cos(p.angle) * p.speed * elapsed;
+          p.y += Math.sin(p.angle) * p.speed * elapsed;
+          p.opacity = Math.max(0, 1 - elapsed);
+          p.scale = 1 + elapsed * 0.5;
+          ctx.globalAlpha = p.opacity;
+          ctx.fillStyle = "#4ade80";
+          ctx.font = `${14 * p.scale}px monospace`;
+          ctx.fillText(p.char, p.x, p.y);
+        });
+
+        if (elapsed < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          document.body.removeChild(tempCanvas);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    });
+
+    // Theme toggle
+    const themeToggle = document.querySelector(".theme-toggle");
+    const html = document.documentElement;
+    const sunIcon = `<path fill="#4ade80" d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"/>`;
+    const moonIcon = `<path fill="#4ade80" d="M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z"/>`;
+
+    function setTheme(theme) {
+      html.setAttribute("data-theme", theme);
+      themeToggle.querySelector(".theme-icon").innerHTML = theme === "dark" ? sunIcon : moonIcon;
+      localStorage.setItem("theme", theme);
+    }
+
+    themeToggle.addEventListener("click", () => {
+      const currentTheme = html.getAttribute("data-theme") || "dark";
+      setTheme(currentTheme === "dark" ? "light" : "dark");
+    });
+
+    // Initialize theme
+    const savedTheme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    setTheme(savedTheme);
   </script>
 </body>
 
