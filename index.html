@@ -2,853 +2,1151 @@
 <html lang="en" data-theme="dark">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Vihaan Sriram's portfolio showcasing projects in tech, law, and environmental sustainability.">
-  <meta name="keywords" content="Vihaan Sriram, portfolio, technology, law, environment, programming">
-  <meta name="author" content="Vihaan Sriram">
-  <title>Vihaan Sriram</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-color: #0d0d0d;
-      --text-color: #ffffff;
-      --accent: #4ade80;
-    }
-
-    :root[data-theme="light"] {
-      --bg-color: #f5f5f5;
-      --text-color: #333333;
-      --accent: #4ade80;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Helvetica', 'Arial', sans-serif;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--bg-color);
-      color: var(--text-color);
-      padding: 2rem;
-      position: relative;
-      overflow-x: hidden;
-      transition: background-color 0.5s ease, color 0.5s ease;
-    }
-
-    #matrix-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      filter: brightness(0.3) opacity(0.2);
-      pointer-events: auto;
-      cursor: pointer;
-      transition: filter 0.5s ease;
-    }
-
-    :root[data-theme="light"] #matrix-bg {
-      filter: brightness(0.5) opacity(0.3);
-    }
-
-    @keyframes pulseMatrix {
-      0%, 100% { filter: brightness(0.3) opacity(0.2); }
-      50% { filter: brightness(0.35) opacity(0.25); }
-    }
-
-    :root[data-theme="light"] #matrix-bg {
-      animation: pulseMatrixLight 5s infinite ease-in-out;
-    }
-
-    @keyframes pulseMatrixLight {
-      0%, 100% { filter: brightness(0.5) opacity(0.3); }
-      50% { filter: brightness(0.55) opacity(0.35); }
-    }
-
-    #matrix-splash {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1000;
-      background: var(--bg-color);
-      opacity: 1;
-      transition: opacity 1s ease;
-    }
-
-    #matrix-splash.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 4rem;
-      animation: fadeInDown 1.5s ease;
-      position: relative;
-      z-index: 10;
-    }
-
-    .header h1 {
-      display: inline-block;
-      font-size: 2.5rem;
-      letter-spacing: 10px;
-      word-spacing: 12px;
-      white-space: normal;
-      font-family: 'Helvetica', 'Arial', sans-serif;
-    }
-
-    .header h1 span {
-      display: inline-block;
-      opacity: 0;
-      animation: letterFade 0.5s ease forwards;
-    }
-
-    .theme-toggle {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      z-index: 20;
-    }
-
-    .theme-toggle svg {
-      width: 1.5rem;
-      height: 1.5rem;
-      fill: var(--accent);
-      transition: fill 0.5s ease;
-    }
-
-    @keyframes letterFade {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .typing {
-      font-family: 'Montserrat', 'Helvetica', sans-serif;
-      font-weight: 700;
-      font-size: 1.8rem;
-      margin-top: 2rem;
-      min-height: 2.5rem;
-      color: var(--accent);
-      display: block;
-      text-align: center;
-      transition: color 0.5s ease;
-    }
-
-    .cursor {
-      display: inline;
-      color: var(--accent);
-      animation: blinkCursor 0.7s infinite, glowCursor 1.5s infinite;
-    }
-
-    @keyframes blinkCursor {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    @keyframes glowCursor {
-      0%, 100% { text-shadow: 0 0 5px var(--accent); }
-      50% { text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent); }
-    }
-
-    @keyframes fadeInDown {
-      0% {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .section {
-      margin-bottom: 2.5rem;
-      animation: fadeInUp 1s ease forwards;
-      opacity: 0;
-      position: relative;
-      z-index: 10;
-    }
-
-    .section:nth-child(1) { animation-delay: 0.2s; }
-    .section:nth-child(2) { animation-delay: 0.4s; }
-    .section:nth-child(3) { animation-delay: 0.6s; }
-
-    .section h2 {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 1rem;
-      transition: color 0.5s ease;
-    }
-
-    .section h2::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width 0.5s ease;
-    }
-
-    .section.in-view h2::after {
-      width: 100%;
-    }
-
-    .section p:not(.typing) {
-      opacity: 0;
-      animation: fadeInContent 1s ease forwards;
-      animation-delay: 0.8s;
-      transition: color 0.5s ease;
-    }
-
-    @keyframes fadeInContent {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .project {
-      border: 1px solid var(--accent);
-      border-radius: 10px;
-      margin: 1rem 0;
-      background-color: rgba(255, 255, 255, 0.05);
-      transition: transform 0.5s ease, box-shadow 0.5s ease, border 0.5s ease, background-color 0.5s ease;
-      position: relative;
-      z-index: 10;
-      opacity: 0;
-      transform-style: preserve-3d;
-    }
-
-    :root[data-theme="light"] .project {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-
-    .project:nth-child(odd) {
-      animation: slideInLeft 0.8s ease forwards;
-    }
-
-    .project:nth-child(even) {
-      animation: slideInRight 0.8s ease forwards;
-    }
-
-    .project:nth-child(1) { animation-delay: 0.1s; }
-    .project:nth-child(2) { animation-delay: 0.2s; }
-    .project:nth-child(3) { animation-delay: 0.3s; }
-    .project:nth-child(4) { animation-delay: 0.4s; }
-    .project:nth-child(5) { animation-delay: 0.5s; }
-    .project:nth-child(6) { animation-delay: 0.6s; }
-    .project:nth-child(7) { animation-delay: 0.7s; }
-
-    @keyframes slideInLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-50px) rotate(-5deg);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0) rotate(0);
-      }
-    }
-
-    @keyframes slideInRight {
-      from {
-        opacity: 0;
-        transform: translateX(50px) rotate(5deg);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0) rotate(0);
-      }
-    }
-
-    .project:hover {
-      transform: rotateY(180deg) scale(1.2);
-      box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
-      border: 1px solid transparent;
-      background: linear-gradient(45deg, rgba(74, 222, 128, 0.2), rgba(255, 255, 255, 0.1));
-      animation: glowPulse 1s infinite ease-in-out;
-    }
-
-    :root[data-theme="light"] .project:hover {
-      background: linear-gradient(45deg, rgba(74, 222, 128, 0.2), rgba(0, 0, 0, 0.1));
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.6); }
-      50% { box-shadow: 0 0 30px rgba(74, 222, 128, 0.8); }
-    }
-
-    .project a {
-      display: block;
-      padding: 1.5rem;
-      color: inherit;
-      text-decoration: none;
-      position: relative;
-      z-index: 1;
-      backface-visibility: hidden;
-    }
-
-    .project a h3 {
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-      transform: translateY(0);
-      opacity: 0.8;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .project a p {
-      transform: translateY(0);
-      opacity: 0.8;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .project:hover a h3,
-    .project:hover a p {
-      transform: translateY(-10px);
-      opacity: 1;
-    }
-
-    .flip-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(74, 222, 128, 0.3);
-      display: none;
-      backface-visibility: hidden;
-      z-index: 0;
-    }
-
-    .project:hover .flip-overlay {
-      display: block;
-    }
-
-    .binary-canvas {
-      width: 100%;
-      height: 100%;
-    }
-
-    @keyframes binaryRain {
-      0% { transform: translateY(-100%); opacity: 1; }
-      100% { transform: translateY(100%); opacity: 0; }
-    }
-
-    a:not(.project a) {
-      color: var(--accent);
-      text-decoration: none;
-      transition: color 0.5s ease;
-    }
-
-    .socials {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-top: 1rem;
-      position: relative;
-      z-index: 10;
-    }
-
-    .socials-icons {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
-
-    .socials a {
-      display: inline-flex;
-      align-items: center;
-      transition: transform 0.3s ease;
-      text-decoration: none;
-    }
-
-    .socials a:not(:hover) {
-      color: var(--accent);
-    }
-
-    .socials a svg {
-      width: 2rem;
-      height: 2rem;
-      fill: var(--accent);
-      stroke: var(--accent);
-      transition: fill 0.5s ease, stroke 0.5s ease;
-    }
-
-    .socials a .fallback {
-      display: none;
-      font-size: 1rem;
-      color: var(--accent);
-      margin-left: 0.5rem;
-      transition: color 0.5s ease;
-    }
-
-    .socials a.no-icons .fallback {
-      display: inline;
-    }
-
-    .socials a.no-icons svg {
-      display: none;
-    }
-
-    .socials a:hover {
-      animation: pulse 0.5s ease;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
-    }
-
-    .footer {
-      text-align: center;
-      padding-top: 3rem;
-      font-size: 0.9rem;
-      opacity: 0;
-      position: relative;
-      z-index: 10;
-      animation: slideUpFooter 1s ease forwards;
-      animation-delay: 1s;
-      transition: color 0.5s ease;
-    }
-
-    @keyframes slideUpFooter {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 0.7; transform: translateY(0); }
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 1rem;
-      }
-
-      .typing {
-        font-size: 1.4rem;
-        margin-top: 1.5rem;
-      }
-
-      .header h1 {
-        font-size: 2rem;
-        letter-spacing: 8px;
-        word-spacing: 10px;
-      }
-
-      .theme-toggle {
-        top: 0.5rem;
-        right: 0.5rem;
-      }
-
-      .theme-toggle svg {
-        width: 1.2rem;
-        height: 1.2rem;
-      }
-
-      .project a {
-        padding: 1rem;
-      }
-
-      .socials a svg {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-
-      .socials a .fallback {
-        font-size: 0.9rem;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .header h1 span,
-      .section,
-      .project,
-      .section h2::after,
-      .socials a:hover,
-      .section p:not(.typing),
-      .footer,
-      .cursor,
-      .project:hover,
-      #matrix-bg {
-        animation: none;
-        opacity: 1;
-        transform: none;
-      }
-
-      .project:hover a h3,
-      .project:hover a p {
-        transform: none;
-        opacity: 1;
-      }
-
-      .project:hover {
-        transform: scale(1.2);
-        box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
-      }
-
-      .flip-overlay,
-      .project:hover .flip-overlay {
-        display: none;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vihaan Sriram's portfolio showcasing projects in tech, law, and environmental sustainability.">
+    <meta name="keywords" content="Vihaan Sriram, portfolio, technology, law, environment, programming">
+    <meta name="author" content="Vihaan Sriram">
+    <title>Vihaan Sriram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --accent: #4ade80;
+            --accent-rgb: 74, 222, 128;
+            transition: all 0.5s ease-in-out;
+        }
+
+        :root[data-theme="light"] {
+            --bg-color: #f0f4f8;
+            --text-color: #121212;
+            --accent: #00d1b2;
+            --accent-rgb: 0, 209, 178;
+        }
+
+        :root[data-theme="red"] {
+            --bg-color: #333;
+            --text-color: #ffffff;
+            --accent: #ff0000;
+            --accent-rgb: 255, 0, 0;
+        }
+
+        :root[data-theme="light"][data-theme-temp="complement"] {
+            --bg-color: #f0f4f8;
+            --text-color: #121212;
+            --accent: #ff4081;
+            --accent-rgb: 255, 64, 129;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fira Code', monospace;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: brightness(0.4) opacity(0.3);
+            pointer-events: auto;
+            cursor: pointer;
+            transition: filter 0.5s ease-in-out;
+        }
+
+        :root[data-theme="light"] #matrix-bg {
+            filter: brightness(1.0) opacity(0.6);
+        }
+
+        :root[data-theme="red"] #matrix-bg {
+            filter: brightness(0.8) opacity(0.5);
+        }
+
+        :root[data-theme="light"][data-theme-temp="complement"] #matrix-bg {
+            filter: brightness(1.0) opacity(0.6);
+        }
+
+        @keyframes pulseMatrix {
+            0%, 100% { filter: brightness(0.3) opacity(0.2); }
+            50% { filter: brightness(0.35) opacity(0.25); }
+        }
+
+        :root[data-theme="light"] #matrix-bg {
+            animation: pulseMatrixLight 5s infinite ease-in-out;
+        }
+
+        @keyframes pulseMatrixLight {
+            0%, 100% { filter: brightness(1.0) opacity(0.6); }
+            50% { filter: brightness(1.05) opacity(0.65); }
+        }
+
+        #matrix-splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: var(--bg-color);
+            opacity: 1;
+            transition: opacity 1s ease-in-out, background 0.5s ease-in-out;
+        }
+
+        #matrix-splash.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            display: inline-block;
+            font-size: clamp(1.4rem, 5vw, 1.8rem);
+            letter-spacing: 10px;
+            word-spacing: 12px;
+            white-space: normal;
+        }
+
+        .header h1 span {
+            display: inline-block;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 20;
+            padding: 0.5rem;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 3s;
+        }
+
+        .theme-toggle svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: var(--accent);
+            transition: fill 0.5s ease-in-out;
+        }
+
+        @keyframes letterFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing {
+            font-weight: 700;
+            font-size: clamp(1.4rem, 5vw, 1.8rem);
+            margin-top: 2rem;
+            min-height: 2.5rem;
+            color: var(--accent);
+            display: block;
+            text-align: center;
+            transition: color 0.5s ease-in-out;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 3s;
+        }
+
+        .cursor {
+            display: inline-block;
+            color: var(--accent);
+            font-size: clamp(1.4rem, 5vw, 1.8rem);
+            line-height: 1;
+            vertical-align: bottom;
+            width: 0.5em;
+            animation: blinkCursor 0.7s infinite;
+            transition: color 0.5s ease-in-out;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .section {
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease forwards;
+            opacity: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section:nth-child(1) { animation-delay: 3.2s; }
+        .section:nth-child(2) { animation-delay: 3.4s; }
+        .section:nth-child(3) { animation-delay: 3.6s; }
+
+        .section h2 {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-size: clamp(1.5rem, 5vw, 1.8rem);
+            transition: color 0.5s ease-in-out;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.5s ease-in-out, background 0.5s ease-in-out;
+        }
+
+        .section.in-view h2::after {
+            width: 100%;
+        }
+
+        .section p:not(.typing) {
+            opacity: 0;
+            animation: fadeInContent 1s ease forwards;
+            animation-delay: 0.8s;
+            transition: color 0.5s ease-in-out;
+            font-size: clamp(0.9rem, 4vw, 1rem);
+        }
+
+        @keyframes fadeInContent {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project {
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            margin: 1rem 0;
+            background-color: transparent;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease, border-color 0.5s ease-in-out;
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            padding: 1rem;
+            min-height: 100px;
+        }
+
+        .project.hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            display: none;
+        }
+
+        .project:nth-child(odd) {
+            animation: slideInLeft 0.8s ease forwards;
+        }
+
+        .project:nth-child(even) {
+            animation: slideInRight 0.8s ease forwards;
+        }
+
+        .project:nth-child(1) { animation-delay: 3.1s; }
+        .project:nth-child(2) { animation-delay: 3.2s; }
+        .project:nth-child(3) { animation-delay: 3.3s; }
+        .project:nth-child(4) { animation-delay: 3.4s; }
+        .project:nth-child(5) { animation-delay: 3.5s; }
+        .project:nth-child(6) { animation-delay: 3.6s; }
+        .project:nth-child(7) { animation-delay: 3.7s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .project:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 4px var(--accent);
+        }
+
+        .project a {
+            display: block;
+            padding: 0.5rem;
+            color: inherit;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project a h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: clamp(1.1rem, 4vw, 1.2rem);
+            transition: color 0.5s ease-in-out;
+        }
+
+        .project a p {
+            font-size: clamp(0.85rem, 3.5vw, 0.9rem);
+            color: var(--text-color);
+            transition: color 0.5s ease-in-out;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 3s;
+        }
+
+        .filter-btn {
+            border: 1px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(var(--accent-rgb), 0.3);
+            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
+        }
+
+        :root[data-theme="red"] .filter-btn:hover, :root[data-theme="red"] .filter-btn.active {
+            background: rgba(255, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        :root[data-theme="light"][data-theme-temp="complement"] .filter-btn:hover,
+        :root[data-theme="light"][data-theme-temp="complement"] .filter-btn.active {
+            background: rgba(255, 64, 129, 0.3);
+            box-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+        }
+
+        a:not(.project a) {
+            color: var(--accent);
+            transition: color 0.5s ease-in-out;
+        }
+
+        .socials {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .socials-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 3s;
+        }
+
+        .socials a {
+            display: inline-flex;
+            align-items: center;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            padding: 0.5rem;
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .socials a:not(:hover) {
+            color: var(--accent);
+        }
+
+        .socials a svg {
+            width: 2rem;
+            height: 2rem;
+            fill: var(--accent);
+            stroke: var(--accent);
+            transition: fill 0.5s ease-in-out, stroke 0.5s ease-in-out;
+        }
+
+        .socials a .fallback {
+            display: none;
+            font-size: 1rem;
+            color: var(--accent);
+            margin-left: 0.5rem;
+            transition: color 0.5s ease-in-out;
+        }
+
+        .socials a.no-icons .fallback {
+            display: inline;
+        }
+
+        .socials a.no-icons svg {
+            display: none;
+        }
+
+        .socials a:hover {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 3rem;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            opacity: 0;
+            position: relative;
+            z-index: 10;
+            animation: slideUpFooter 1s ease forwards;
+            animation-delay: 4s;
+            transition: color 0.5s ease-in-out;
+        }
+
+        @keyframes slideUpFooter {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 0.7; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .header {
+                margin-bottom: 2rem;
+            }
+
+            .typing {
+                font-size: clamp(1rem, 5vw, 1.2rem);
+                margin-top: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: clamp(1rem, 5vw, 1.2rem);
+                letter-spacing: 8px;
+                word-spacing: 10px;
+            }
+
+            .section {
+                margin-bottom: 1.5rem;
+            }
+
+            .section h2 {
+                font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+            }
+
+            .project {
+                margin: 0.5rem 0;
+                padding: 0.8rem;
+            }
+
+            .project a {
+                padding: 0.8rem;
+            }
+
+            .filter-buttons {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 0.4rem 0.8rem;
+            }
+
+            .socials-icons {
+                gap: 1rem;
+            }
+
+            .socials a svg {
+                width: 1.2rem;
+                height: 1.2rem;
+            }
+
+            .socials a .fallback {
+                font-size: 0.8rem;
+            }
+
+            .theme-toggle {
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+
+            .theme-toggle svg {
+                width: 1.2rem;
+                height: 1.2rem;
+            }
+
+            #matrix-bg {
+                filter: brightness(0.4) opacity(0.3);
+            }
+
+            :root[data-theme="red"] #matrix-bg {
+                filter: brightness(0.8) opacity(0.5);
+            }
+
+            :root[data-theme="light"][data-theme-temp="complement"] #matrix-bg {
+                filter: brightness(1.0) opacity(0.6);
+            }
+
+            .project:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 4px var(--accent);
+            }
+
+            .cursor {
+                font-size: clamp(1rem, 1.2vw, 1.2rem);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                margin-bottom: 1.5rem;
+            }
+
+            .section {
+                margin-bottom: 1rem;
+            }
+
+            .section h2 {
+                font-size: 1.2rem;
+            }
+
+            .section p:not(.typing) {
+                font-size: .85rem;
+            }
+
+            .project a h3 {
+                font-size: 1rem;
+            }
+
+            .project a p {
+                font-size: .8rem;
+            }
+
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+
+            .footer {
+                padding-top: 2rem;
+                font-size: .8rem;
+            }
+        }
+
+        @media (hover: none) {
+            .project:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .header h1 span,
+            .section,
+            .project,
+            .section h2::after,
+            .socials a,
+            .section p:not(.typing),
+            .footer,
+            .cursor,
+            .project.hidden {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+
+            .project:hover {
+                transform: scale(1.05);
+                box-shadow: none;
+            }
+
+            .project.hidden {
+                display: none !important;
+            }
+
+            #matrix-bg {
+                animation: none !important;
+                filter: brightness(.1) opacity(.05);
+            }
+
+            .cursor {
+                animation: none !important;
+                opacity: 1 !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <canvas id="matrix-splash"></canvas>
-  <canvas id="matrix-bg"></canvas>
-  <div class="header">
-    <h1 id="header-name">Vihaan Sriram</h1>
-    <button class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="theme-icon">
-        <path fill="#4ade80" d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"/>
-      </svg>
-    </button>
-    <p class="typing" id="typing"></p>
-  </div>
+    <canvas id="matrix-splash"></canvas>
+    <canvas id="matrix-bg"></canvas>
+    <div class="header">
+        <h1 id="header-name" data-text="Vihaan Sriram">Vihaan Sriram</h1>
+        <button class="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="theme-icon">
+                <path d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"/>
+            </svg>
+        </button>
+        <p class="typing" id="typing" data-text=""></p>
+    </div>
 
-  <div class="section">
-    <h2>About Me</h2>
-    <p>Yo, I’m Vihaan, a 17-year-old dodging adulting like it’s a pop-up ad.<br>
-      I code apps when my Wi-Fi isn’t throwing a tantrum, bike to save the planet (or outrun my to-do list), and study law to win arguments with traffic lights.<br>
-      My brain’s 80% bad puns, 20% caffeine, and I survive on snacks and sheer chaos.<br>
-      Fitness? I sprint to the fridge during ad breaks.<br>
-      Social skills? I’m a face-to-face charmer and call-crushing pro, but chats and family functions turn me into a buffering robot—send pizza, stat.<br>
-      I’m saving the environment one reusable straw at a time while pretending I’ve got life figured out.<br>
-      Spoiler: I don’t, but I’m faking it with style.<br>
-    </p>
-  </div>
+    <div class="section">
+        <h2 data-text="About Me">About Me</h2>
+        <p>Yo, I’m Vihaan, a 17-year-old dodging adulting like it’s a pop-up ad.<br>
+        I code apps when my Wi-Fi isn’t throwing a tantrum, bike to save the planet (or outrun my to-do list), and study law to win arguments with traffic lights.<br>
+        My brain’s 80% bad puns, 20% caffeine, and I survive on snacks and sheer chaos.<br>
+        Fitness? I sprint to the fridge during ad breaks.<br>
+        Social skills? I’m a face-to-face charmer and call-crushing pro, but chats and family functions turn me into a buffering robot—send pizza, stat.<br>
+        I’m saving the environment one reusable straw at a time while pretending I’ve got life figured out.<br>
+        Spoiler: I don’t, but I’m faking it with style.<br>
+        </p>
+    </div>
 
-  <div class="section">
-    <h2>Projects</h2>
-    <div class="project">
-      <a href="https://github.com/VihaanToTheRescue/Unit-Converter-Application" target="_blank">
-        <h3>Unit Converter</h3>
-        <p>A versatile and user-friendly conversion tool built with PyQt5.</p>
-        <div class="flip-overlay">
-          <canvas class="binary-canvas"></canvas>
+    <div class="section" id="projects">
+        <h2 data-text="Projects">Projects</h2>
+        <div class="filter-buttons" role="tablist" aria-label="Filter projects by category">
+            <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true" aria-controls="projects-list">All</button>
+            <button class="filter-btn" data-filter="tech" role="tab" aria-selected="false" aria-controls="projects-list">Tech</button>
+            <button class="filter-btn" data-filter="law" role="tab" aria-selected="false" aria-controls="projects-list">Law</button>
+            <button class="filter-btn" data-filter="environment" role="tab" aria-selected="false" aria-controls="projects-list">Environment</button>
         </div>
-      </a>
-    </div>
-    <div class="project">
-      <a href="https://github.com/VihaanToTheRescue/number-guessing-game" target="_blank">
-        <h3>Number Guessing Game</h3>
-        <p>A simple GUI-based guessing game made with Tkinter.</p>
-        <div class="flip-overlay">
-          <canvas class="binary-canvas"></canvas>
+        <div id="projects-list">
+            <div class="project" data-category="tech">
+                <a href="https://github.com/VihaanToTheRescue/Unit-Converter-Application" target="_blank">
+                    <h3 data-text="Unit Converter">Unit Converter</h3>
+                    <p data-text="A versatile and user-friendly conversion tool built with PyQt5.">A versatile and user-friendly conversion tool built with PyQt5.</p>
+                </a>
+            </div>
+            <div class="project" data-category="tech">
+                <a href="https://github.com/VihaanToTheRescue/number-guessing-game" target="_blank">
+                    <h3 data-text="Number Guessing Game">Number Guessing Game</h3>
+                    <p data-text="A simple GUI-based guessing game made with Tkinter.">A simple GUI-based guessing game made with Tkinter.</p>
+                </a>
+            </div>
+            <div class="project" data-category="law">
+                <a href="https://medium.com/@vihaanaadira11/the-future-of-legal-liability-in-the-age-of-autonomous-vehicles-whos-really-responsible-5de1079b9cdd" target="_blank">
+                    <h3 data-text="Legal Liability & Autonomous Vehicles">Legal Liability & Autonomous Vehicles</h3>
+                    <p data-text="Exploring accountability in AI-driven transportation.">Exploring accountability in AI-driven transportation.</p>
+                </a>
+            </div>
+            <div class="project" data-category="environment">
+                <a href="https://www.ijraset.com/research-paper/assessing-the-impact-of-limited-access-on-irula-women-in-thethampakkam-pondicherry" target="_blank">
+                    <h3 data-text="Water Sustainability & Irula Women">Water Sustainability & Irula Women</h3>
+                    <p data-text="Impact study on limited access to water in Pondicherry.">Impact study on limited access to water in Pondicherry.</p>
+                </a>
+            </div>
+            <div class="project" data-category="law">
+                <a href="https://www.lawaudience.com/navigating-the-intersection-of-artificial-intelligence-and-intellectual-property-challenges-and-opportunities/" target="_blank">
+                    <h3 data-text="AI & Intellectual Property">AI & Intellectual Property</h3>
+                    <p data-text="Challenges at the junction of AI and IP laws.">Challenges at the junction of AI and IP laws.</p>
+                </a>
+            </div>
+            <div class="project" data-category="law">
+                <a href="https://ijlsi.com/paper/plastic-waste-and-the-law-strengthening-epr-to-combat-indias-growing-crisis/" target="_blank">
+                    <h3 data-text="Plastic Waste & Law">Plastic Waste & Law</h3>
+                    <p data-text="Strengthening EPR to fight India’s plastic crisis.">Strengthening EPR to fight India’s plastic crisis.</p>
+                </a>
+            </div>
+            <div class="project" data-category="environment">
+                <a href="https://www.youtube.com/watch?v=jhJhrAJoLzs" target="_blank">
+                    <h3 data-text="Award-Winning Ocean Cleanliness Video">Award-Winning Ocean Cleanliness Video</h3>
+                    <p data-text="A national award-winning video made for Wipro Earthian on ocean preservation in Pondicherry.">A national award-winning video made for Wipro Earthian on ocean preservation in Pondicherry.</p>
+                </a>
+            </div>
         </div>
-      </a>
     </div>
-    <div class="project">
-      <a href="https://medium.com/@vihaanaadira11/the-future-of-legal-liability-in-the-age-of-autonomous-vehicles-whos-really-responsible-5de1079b9cdd" target="_blank">
-        <h3>Legal Liability & Autonomous Vehicles</h3>
-        <p>Exploring accountability in AI-driven transportation.</p>
-        <div class="flip-overlay">
-          <canvas class="binary-canvas"></canvas>
-        </div>
-      </a>
-    </div>
-    <div class="project">
-      <a href="https://www.ijraset.com/research-paper/assessing-the-impact-of-limited-access-on-irula-women-in-thethampakkam-pondicherry" target="_blank">
-        <h3>Water Sustainability & Irula Women</h3>
-        <p>Impact study on limited access to water in Pondicherry.</p>
-        <div class="flip-overlay">
-          <canvas class="binary-canvas"></canvas>
-        </div>
-      </a>
-    </div>
-    <div class="project">
-      <a href="https://www.lawaudience.com/navigating-the-intersection-of-artificial-intelligence-and-intellectual-property-challenges-and-opportunities/" target="_blank">
-        <h3>AI & Intellectual Property</h3>
-        <p>Challenges at the junction of AI and IP laws.</p>
-        <div class="flip-overlay">
-          <canvas class="binary-canvas"></canvas>
-        </div>
-      </a>
-    </div>
-    <div class="project">
-      <a href="https://ijlsi.com/paper/plastic-waste-and-the-law-strengthening-epr-to-combat-indias-growing-crisis/" target="_blank">
-        <h3>Plastic Waste & Law</h3>
-        <p>Strengthening EPR to fight India’s plastic crisis.</p>
-        <div class="flip-overlay">
-          <canvas class="binary-canvas"></canvas>
-        </div>
-      </a>
-    </div>
-    <div class="project">
-      <a href="https://www.youtube.com/watch?v=jhJhrAJoLzs" target="_blank">
-        <h3>Award-Winning Ocean Cleanliness Video</h3>
-        <p>A national award-winning video made for Wipro Earthian on ocean preservation in Pondicherry.</p>
-        <div class="flip-overlay">
-          <canvas class="binary-canvas"></canvas>
-        </div>
-      </a>
-    </div>
-  </div>
 
-  <div class="section socials">
-    <h2>Contact</h2>
-    <p>Let's connect! Feel free to reach out via email or follow me on social media.</p>
-    <div class="socials-icons">
-      <a href="mailto:vihaanaadira11@gmail.com" title="Email" aria-label="Send email to Vihaan Sriram">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <path fill="#4ade80" d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49-16.841 13.247-50.201 45.072-73.413 44.701-23.208.375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717.231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"/>
-        </svg>
-        <span class="fallback">Email</span>
-      </a>
-      <a href="https://www.linkedin.com/in/vihaan-sriram-1675b2236/" target="_blank" title="LinkedIn" aria-label="Visit Vihaan Sriram's LinkedIn profile">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-          <path fill="#4ade80" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
-        </svg>
-        <span class="fallback">LinkedIn</span>
-      </a>
-      <a href="https://instagram.com/vihaan.sriram" target="_blank" title="Instagram" aria-label="Visit Vihaan Sriram's Instagram profile">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-          <path fill="#4ade80" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.8 9.9 67.6 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
-        </svg>
-        <span class="fallback">Instagram</span>
-      </a>
+    <div class="section socials">
+        <h2 data-text="Contact">Contact</h2>
+        <p data-text="Let's connect! Feel free to reach out via email or follow me on social media.">Let's connect! Feel free to reach out via email or follow me on social media.</p>
+        <div class="socials-icons">
+            <a href="mailto:vihaanaadira11@gmail.com" title="Email" aria-label="Send email to Vihaan Sriram" data-text="Email">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path d="M464 64H48C21.49 64 0 85.49 0 112v288c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V112c0-26.51-21.49-48-48-48zm0 48v40.805c-22.422 18.259-58.168 46.651-134.587 106.49c-16.841 13.247-50.201 45.072-73.413 44.701-23.208 .375-56.579-31.459-73.413-44.701C106.18 199.465 70.425 171.067 48 152.805V112h416zM48 400V214.398c22.914 18.251 55.409 43.862 104.938 82.646 21.857 17.205 60.134 55.186 103.062 54.955 42.717 .231 80.509-37.199 103.053-54.947 49.528-38.783 82.032-64.401 104.947-82.653V400H48z"/>
+                </svg>
+                <span class="fallback">Email</span>
+            </a>
+            <a href="https://www.linkedin.com/in/vihaan-sriram-1675b932c/" target="_blank" title="LinkedIn" aria-label="Visit Vihaan Sriram's LinkedIn profile" data-text="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
+                </svg>
+                <span class="fallback">LinkedIn</span>
+            </a>
+            <a href="https://instagram.com/vihaan.sriram" target="_blank" title="Instagram" aria-label="Visit Vihaan Sriram’s Instagram profile" data-text="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.8 9.9 67.6 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9c2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+                </svg>
+                <span class="fallback">Instagram</span>
+            </a>
+        </div>
     </div>
-  </div>
 
-  <div class="footer">
-    Made with love by Vihaan Sriram
-  </div>
+    <div class="footer" data-text="Made with love by Vihaan Sriram">
+        Made with love by Vihaan Sriram
+    </div>
 
-  <script>
-    const messages = [
-      "Techie. Law Enthusiast. Biker. Environmentalist.",
-      "CLAT Aspirant and Coding Geek",
-      "Saving the planet, one byte at a time",
-      "Matrix Mind in a Legal World",
-      "Digital Defender of Nature"
-    ];
-    let index = 0, charIndex = 0, isDeleting = false;
-    const typingElement = document.getElementById("typing");
+    <div id="theme-announcer" aria-live="polite" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);"></div>
 
-    function type() {
-      const currentMessage = messages[index];
-      const displayText = currentMessage.substring(0, charIndex);
-      typingElement.innerHTML = `${displayText}<span class="cursor">|</span>`;
+    <script>
+        // Initialize theme immediately
+        (function () {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme !== "light") {
+                localStorage.setItem("theme", "dark");
+                document.documentElement.setAttribute("data-theme", "dark");
+            } else {
+                document.documentElement.setAttribute("data-theme", "light");
+            }
+        })();
 
-      if (!isDeleting && charIndex < currentMessage.length) {
-        charIndex++;
-        setTimeout(type, 120);
-      } else if (isDeleting && charIndex > 0) {
-        charIndex--;
-        setTimeout(type, 80);
-      } else {
-        isDeleting = !isDeleting;
-        if (!isDeleting) {
-          index = (index + 1) % messages.length;
+        const splashDuration = 3000;
+        const messages = [
+            "Techie. Law Enthusiast. Environmentalist.",
+            "CLAT Aspirant and Coding Geek",
+            "Saving the planet one byte at a time.",
+            "Matrix Mind In A Legal World",
+            "Digital Defender of Nature"
+        ];
+        const nameText = "Vihaan Sriram";
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+        let messageIndex = 0, messageCharIndex = 0, isTyping = true;
+        let nameCharIndex = 0, isNameTyping = true;
+        const typingElement = document.getElementById("typing");
+        const headerName = document.getElementById("header-name");
+
+        function getRandomChar() {
+            return chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        setTimeout(type, isDeleting ? 80 : 800);
-      }
-    }
-    type();
 
-    // Matrix effect for splash and background
-    function createMatrixEffect(canvasId, isSplash = false) {
-      const canvas = document.getElementById(canvasId);
-      const ctx = canvas.getContext("2d");
-      canvas.height = window.innerHeight;
-      canvas.width = window.innerWidth;
+        function typePasswordGuess(element, targetText, currentIndex, callback) {
+            const maxAttempts = 10;
+            let attempts = 0;
+            const fixedText = targetText.substring(0, currentIndex - 1);
+            const currentChar = targetText[currentIndex - 1];
 
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?";
-      const fontSize = 14;
-      const columns = Math.floor(canvas.width / fontSize / 2);
-      const drops = Array(columns).fill(1);
+            function updateChar() {
+                let displayChar = getRandomChar();
+                if (attempts >= maxAttempts) {
+                    displayChar = currentChar;
+                }
+                try {
+                    element.innerHTML = fixedText + displayChar + `<span class="cursor">_</span>`;
+                    element.setAttribute("data-text", fixedText + displayChar);
+                } catch (e) {
+                    console.error("DOM update error:", e);
+                }
 
-      function draw() {
-        ctx.fillStyle = isSplash ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0.1)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#4ade80";
-        ctx.font = `${fontSize}px monospace`;
-
-        for (let i = 0; i < drops.length; i++) {
-          const text = chars.charAt(Math.floor(Math.random() * chars.length));
-          const x = i * fontSize * 2;
-          const y = drops[i] * fontSize;
-          ctx.fillText(text, x, y);
-          if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
+                if (attempts >= maxAttempts) {
+                    if (callback) callback();
+                } else {
+                    attempts++;
+                    setTimeout(updateChar, 50);
+                }
+            }
+            updateChar();
         }
-        requestAnimationFrame(draw);
-      }
 
-      requestAnimationFrame(draw);
-
-      window.addEventListener("resize", () => {
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
-        drops.length = Math.floor(canvas.width / fontSize / 2);
-        for (let i = 0; i < drops.length; i++) drops[i] = 1;
-      });
-    }
-
-    // Initialize Matrix effects
-    createMatrixEffect("matrix-bg");
-    createMatrixEffect("matrix-splash", true);
-
-    // Hide splash screen after 3 seconds
-    setTimeout(() => {
-      const splash = document.getElementById("matrix-splash");
-      splash.classList.add("hidden");
-    }, 3000);
-
-    // Header letter animation
-    const headerName = document.getElementById("header-name");
-    const headerText = headerName.textContent;
-    headerName.innerHTML = headerText.split("").map((char, i) => 
-      `<span style="animation-delay: ${i * 0.05}s">${char === String.fromCharCode(160) ? String.fromCharCode(160) : char}</span>`
-    ).join("");
-
-    // Project binary rain effect
-    const projects = document.querySelectorAll(".project");
-    projects.forEach(project => {
-      const canvas = project.querySelector(".binary-canvas");
-      const ctx = canvas.getContext("2d");
-      let animationFrame;
-
-      function startBinaryRain() {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        canvas.width = project.offsetWidth;
-        canvas.height = project.offsetHeight;
-        const fontSize = 12;
-        const columns = Math.floor(canvas.width / fontSize);
-        const drops = Array(columns).fill(0);
-
-        function draw() {
-          ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#4ade80";
-          ctx.font = `${fontSize}px monospace`;
-
-          for (let i = 0; i < drops.length; i++) {
-            const text = Math.random() > 0.5 ? "0" : "1";
-            const x = i * fontSize;
-            const y = drops[i] * fontSize;
-            ctx.fillText(text, x, y);
-            drops[i]++;
-            if (y > canvas.height && Math.random() > 0.95) drops[i] = 0;
-          }
-          animationFrame = requestAnimationFrame(draw);
+        function deleteText(element, targetText, currentIndex, callback) {
+            try {
+                element.innerHTML = targetText.substring(0, currentIndex) + `<span class="cursor">_</span>`;
+                element.setAttribute("data-text", targetText.substring(0, currentIndex));
+            } catch (e) {
+                console.error("DOM update error:", e);
+            }
+            if (callback) callback();
         }
-        draw();
-      }
 
-      function stopBinaryRain() {
-        if (animationFrame) cancelAnimationFrame(animationFrame);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
+        function typeName() {
+            if (isNameTyping && nameCharIndex < nameText.length) {
+                nameCharIndex++;
+                typePasswordGuess(headerName, nameText, nameCharIndex, () => {
+                    if (nameCharIndex === nameText.length) {
+                        isNameTyping = false;
+                        setTimeout(typeName, 1000);
+                    } else {
+                        setTimeout(typeName, 100);
+                    }
+                });
+            } else if (!isNameTyping && nameCharIndex > 0) {
+                nameCharIndex--;
+                deleteText(headerName, nameText, nameCharIndex, () => {
+                    if (nameCharIndex === 0) {
+                        isNameTyping = true;
+                        setTimeout(typeName, 1000);
+                    } else {
+                        setTimeout(typeName, 150);
+                    }
+                });
+            } else {
+                isNameTyping = true;
+                nameCharIndex = 0;
+                setTimeout(typeName, 1000);
+            }
+        }
 
-      project.addEventListener("mouseenter", startBinaryRain);
-      project.addEventListener("mouseleave", stopBinaryRain);
-    });
+        function typeMessage() {
+            const currentMessage = messages[messageIndex];
+            if (isTyping && messageCharIndex < currentMessage.length) {
+                messageCharIndex++;
+                typePasswordGuess(typingElement, currentMessage, messageCharIndex, () => {
+                    if (messageCharIndex === currentMessage.length) {
+                        isTyping = false;
+                        setTimeout(typeMessage, 1000);
+                    } else {
+                        setTimeout(typeMessage, 100);
+                    }
+                });
+            } else if (!isTyping && messageCharIndex > 0) {
+                messageCharIndex--;
+                deleteText(typingElement, currentMessage, messageCharIndex, () => {
+                    if (messageCharIndex === 0) {
+                        isTyping = true;
+                        messageIndex = (messageIndex + 1) % messages.length;
+                        setTimeout(typeMessage, 1000);
+                    } else {
+                        setTimeout(typeMessage, 150);
+                    }
+                });
+            } else {
+                isTyping = true;
+                messageIndex = (messageIndex + 1) % messages.length;
+                messageCharIndex = 0;
+                setTimeout(typeMessage, 1000);
+            }
+        }
 
-    // Matrix easter egg
-    const matrixBg = document.getElementById("matrix-bg");
-    let lastClick = 0;
-    matrixBg.addEventListener("click", (e) => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        console.log("Matrix easter egg clicked!");
-        return;
-      }
+        if (headerName) {
+            headerName.innerHTML = Array(nameText.length).fill().map(() => 
+                `<span style="opacity: 1">${getRandomChar()}</span>`
+            ).join("");
+            setTimeout(typeName, splashDuration);
+        }
 
-      const now = Date.now();
-      if (now - lastClick < 500) return;
-      lastClick = now;
+        if (typingElement) {
+            setTimeout(typeMessage, splashDuration + 250);
+        }
 
-      const tempCanvas = document.createElement("canvas");
-      tempCanvas.style.position = "fixed";
-      tempCanvas.style.zIndex = "0";
-      tempCanvas.width = 200;
-      tempCanvas.height = 200;
-      tempCanvas.style.left = `${e.clientX - 100}px`;
-      tempCanvas.style.top = `${e.clientY - 100}px`;
-      document.body.appendChild(tempCanvas);
+        function createMatrixEffect(canvasId, isSplash = false) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth;
 
-      const ctx = tempCanvas.getContext("2d");
-      const particles = Array.from({ length: 25 }, () => ({
-        x: 100,
-        y: 100,
-        angle: Math.random() * Math.PI * 2,
-        speed: 50 + Math.random() * 50,
-        char: Math.random() > 0.5 ? "1" : "0",
-        opacity: 1,
-        scale: 1
-      }));
+            const isMobile = window.innerWidth <= 768;
+            const fontSize = isMobile ? 12 : 14;
+            let columns = Math.floor(canvas.width / fontSize / (isMobile ? 1.5 : 2));
+            let drops = Array(columns).fill(1);
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
 
-      let startTime = null;
-      function animate(time) {
-        if (!startTime) startTime = time;
-        const elapsed = (time - startTime) / 1000;
-        ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-        particles.forEach(p => {
-          p.x += Math.cos(p.angle) * p.speed * elapsed;
-          p.y += Math.sin(p.angle) * p.speed * elapsed;
-          p.opacity = Math.max(0, 1 - elapsed);
-          p.scale = 1 + elapsed * 0.5;
-          ctx.globalAlpha = p.opacity;
-          ctx.fillStyle = "#4ade80";
-          ctx.font = `${14 * p.scale}px monospace`;
-          ctx.fillText(p.char, p.x, p.y);
+            function draw() {
+                ctx.fillStyle = isSplash ? "rgba(0, 0, 0, 0.05)" : "rgba(0, 0, 0, 0.1)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const currentTheme = document.documentElement.getAttribute("data-theme");
+                const tempTheme = document.documentElement.getAttribute("data-theme-temp");
+                let accentColor = "#4ade80";
+                if (currentTheme === "red") accentColor = "#ff0000";
+                else if (currentTheme === "light" && tempTheme === "complement") accentColor = "#ff4081";
+                else if (currentTheme === "light") accentColor = "#00d1b2";
+                else accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+
+                ctx.fillStyle = accentColor;
+                ctx.font = fontSize + "px 'Fira Code', monospace";
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                    const x = i * fontSize * (isMobile ? 1.5 : 2);
+                    const y = drops[i] * fontSize;
+                    ctx.fillText(text, x, y);
+                    if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                    drops[i]++;
+                }
+                requestAnimationFrame(draw);
+            }
+
+            requestAnimationFrame(draw);
+
+            window.addEventListener("resize", () => {
+                canvas.height = window.innerHeight;
+                canvas.width = window.innerWidth;
+                columns = Math.floor(canvas.width / fontSize / (isMobile ? 1.5 : 2));
+                drops = Array(columns).fill(1);
+            });
+        }
+
+        createMatrixEffect("matrix-bg");
+        createMatrixEffect("matrix-splash", true);
+
+        const splash = document.getElementById("matrix-splash");
+        if (splash) {
+            setTimeout(() => {
+                splash.classList.add("hidden");
+            }, splashDuration);
+        }
+
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const projects = document.querySelectorAll(".project");
+        const projectsList = document.getElementById("projects-list");
+
+        filterButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                filterButtons.forEach(btn => {
+                    btn.classList.remove("active");
+                    btn.setAttribute("aria-selected", "false");
+                });
+                button.classList.add("active");
+                button.setAttribute("aria-selected", "true");
+                const filter = button.getAttribute("data-filter");
+                projects.forEach(project => {
+                    const category = project.getAttribute("data-category");
+                    if (filter === "all" || category === filter) {
+                        project.classList.remove("hidden");
+                    } else {
+                        project.classList.add("hidden");
+                    }
+                });
+            });
+
+            button.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    button.click();
+                }
+            });
         });
 
-        if (elapsed < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          document.body.removeChild(tempCanvas);
+        const isTouchDevice = "ontouchstart" in window;
+        projects.forEach(project => {
+            if (isTouchDevice && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                project.addEventListener("touchstart", () => {
+                    project.style.transform = "scale(1.05)";
+                    project.style.boxShadow = "0 0 4px var(--accent)";
+                }, { passive: true });
+                project.addEventListener("touchend", () => {
+                    project.style.transform = "scale(1)";
+                    project.style.boxShadow = "none";
+                }, { passive: true });
+            }
+
+            project.addEventListener("click", () => {
+                const html = document.documentElement;
+                const currentTheme = html.getAttribute("data-theme") || "dark";
+                const themeAnnouncer = document.getElementById("theme-announcer");
+
+                if (currentTheme === "dark") {
+                    if (themeAnnouncer) themeAnnouncer.textContent = "Switching to red theme.";
+                    html.setAttribute("data-theme", "red");
+                    setTimeout(() => {
+                        if (themeAnnouncer) themeAnnouncer.textContent = "Reverting to dark theme.";
+                        html.setAttribute("data-theme", "dark");
+                        html.removeAttribute("data-theme-temp");
+                        if (themeAnnouncer) setTimeout(() => themeAnnouncer.textContent = "", 1000);
+                    }, 5000);
+                } else if (currentTheme === "light") {
+                    if (themeAnnouncer) themeAnnouncer.textContent = "Switching to complementary theme.";
+                    html.setAttribute("data-theme-temp", "complement");
+                    setTimeout(() => {
+                        if (themeAnnouncer) themeAnnouncer.textContent = "Reverting to light theme.";
+                        html.removeAttribute("data-theme-temp");
+                        if (themeAnnouncer) setTimeout(() => themeAnnouncer.textContent = "", 1000);
+                    }, 5000);
+                }
+            });
+        });
+
+        const matrixBg = document.getElementById("matrix-bg");
+        if (matrixBg) {
+            let lastClickTime = 0;
+            matrixBg.addEventListener("click", (e) => {
+                if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    console.log("Matrix easter egg clicked (reduced motion active)!");
+                    return;
+                }
+
+                const now = Date.now();
+                if (now - lastClickTime < 500) return;
+                lastClickTime = now;
+
+                const tempCanvas = document.createElement("canvas");
+                tempCanvas.style.position = "fixed";
+                tempCanvas.style.zIndex = "0";
+                tempCanvas.width = 200;
+                tempCanvas.height = 200;
+                tempCanvas.style.left = `${e.clientX - tempCanvas.width / 2}px`;
+                tempCanvas.style.top = `${e.clientY - tempCanvas.height / 2}px`;
+                document.body.appendChild(tempCanvas);
+
+                const ctx = tempCanvas.getContext("2d");
+                const particles = Array.from({ length: 30 }, () => ({
+                    x: tempCanvas.width / 2,
+                    y: tempCanvas.height / 2,
+                    angle: Math.random() * Math.PI * 2,
+                    speed: 60 + Math.random() * 60,
+                    char: Math.random() > 0.5 ? "1" : "0",
+                    opacity: 1,
+                    scale: 1
+                }));
+
+                let startTime = null;
+                let lastFrameTime = 0;
+                const animationDuration = 1;
+
+                function animateParticles(currentTime) {
+                    if (!startTime) {
+                        startTime = currentTime;
+                        lastFrameTime = currentTime;
+                    }
+
+                    const totalElapsed = (currentTime - startTime) / 1000;
+                    const deltaTime = (currentTime - lastFrameTime) / 1000;
+                    lastFrameTime = currentTime;
+
+                    ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+                    const currentTheme = document.documentElement.getAttribute("data-theme");
+                    const tempTheme = document.documentElement.getAttribute("data-theme-temp");
+                    let particleColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+                    if (currentTheme === "red") particleColor = "#ff0000";
+                    else if (currentTheme === "light" && tempTheme === "complement") particleColor = "#ff4081";
+                    else if (currentTheme === "light") particleColor = "#00d1b2";
+
+                    particles.forEach(p => {
+                        p.x += Math.cos(p.angle) * p.speed * deltaTime;
+                        p.y += Math.sin(p.angle) * p.speed * deltaTime;
+
+                        p.opacity = Math.max(0, 1 - totalElapsed / animationDuration);
+                        p.scale = 1 + (totalElapsed / animationDuration) * 0.8;
+
+                        ctx.globalAlpha = p.opacity;
+                        ctx.fillStyle = particleColor;
+                        ctx.font = `${12 * p.scale}px 'Fira Code', monospace`;
+                        ctx.fillText(p.char, p.x, p.y);
+                    });
+
+                    if (totalElapsed < animationDuration) {
+                        requestAnimationFrame(animateParticles);
+                    } else {
+                        if (tempCanvas.parentNode) {
+                            document.body.removeChild(tempCanvas);
+                        }
+                    }
+                }
+                requestAnimationFrame(animateParticles);
+            });
         }
-      }
 
-      requestAnimationFrame(animate);
-    });
+        const themeToggle = document.querySelector(".theme-toggle");
+        const html = document.documentElement;
+        const sunIconPath = "M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z";
+        const moonIconPath = "M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z";
+        const themeIconElement = themeToggle ? themeToggle.querySelector(".theme-icon") : null;
+        const themeAnnouncer = document.getElementById("theme-announcer");
 
-    // Theme toggle
-    const themeToggle = document.querySelector(".theme-toggle");
-    const html = document.documentElement;
-    const sunIcon = `<path fill="#4ade80" d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm246.4 80.5l-94.7-47.3 33.5-100.4c4.5-13.6-8.4-26.5-21.9-21.9l-100.4 33.5-47.4-94.8c-6.4-12.8-24.6-12.8-31 0l-47.3 94.7L92.7 70.8c-13.6-4.5-26.5 8.4-21.9 21.9l33.5 100.4-94.7 47.4c-12.8 6.4-12.8 24.6 0 31l94.7 47.3-33.5 100.5c-4.5 13.6 8.4 26.5 21.9 21.9l100.4-33.5 47.3 94.7c6.4 12.8 24.6 12.8 31 0l47.3-94.7 100.4 33.5c13.6 4.5 26.5-8.4 21.9-21.9l-33.5-100.4 94.7-47.3c13-6.5 13-24.7.2-31.1zm-155.9 106c-49.9 49.9-131.1 49.9-181 0-49.9-49.9-49.9-131.1 0-181 49.9-49.9 131.1-49.9 181 0 49.9 49.9 49.9 131.1 0 181z"/>`;
-    const moonIcon = `<path fill="#4ade80" d="M283.211 512c78.962 0 151.079-35.925 198.857-94.792 7.068-8.708-.639-21.43-11.562-19.35-124.203 23.654-238.262-71.576-238.262-196.954 0-72.222 38.662-138.635 101.498-174.394 9.686-5.512 7.25-20.197-3.756-22.23A258.156 258.156 0 0 0 283.211 0c-141.309 0-256 114.511-256 256 0 141.309 114.511 256 256 256z"/>`;
+        function setTheme(theme) {
+            if (theme !== "light" && theme !== "dark") theme = "dark";
+            html.setAttribute("data-theme", theme);
+            html.removeAttribute("data-theme-temp");
+            localStorage.setItem("theme", theme);
+            if (themeIconElement) {
+                themeIconElement.innerHTML = `<path d="${theme === 'dark' ? sunIconPath : moonIconPath}"/>`;
+            }
+            if (themeAnnouncer) themeAnnouncer.textContent = `Theme set to ${theme}.`;
+        }
 
-    function setTheme(theme) {
-      html.setAttribute("data-theme", theme);
-      themeToggle.querySelector(".theme-icon").innerHTML = theme === "dark" ? sunIcon : moonIcon;
-      localStorage.setItem("theme", theme);
-    }
+        if (themeToggle) {
+            themeToggle.addEventListener("click", () => {
+                const currentTheme = html.getAttribute("data-theme") || "dark";
+                setTheme(currentTheme === "dark" ? "light" : "dark");
+            });
+        }
 
-    themeToggle.addEventListener("click", () => {
-      const currentTheme = html.getAttribute("data-theme") || "dark";
-      setTheme(currentTheme === "dark" ? "light" : "dark");
-    });
+        const sections = document.querySelectorAll(".section");
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.1
+        };
 
-    // Initialize theme
-    const savedTheme = localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-    setTheme(savedTheme);
-  </script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("in-view");
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
 </body>
-
 </html>
