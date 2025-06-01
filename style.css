@@ -4,7 +4,7 @@
     --accent: #4ade80;
     --accent-rgb: 74, 222, 128;
     --password-status-color: var(--accent);
-    transition: all 0.5s ease-in-out; /* Applied to :root, affects variable transitions */
+    transition: all 0.5s ease-in-out;
 }
 
 :root[data-theme="light"] {
@@ -46,14 +46,18 @@ body {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     transition: filter 0.5s ease-in-out;
 }
-#matrix-bg { z-index: -1; filter: brightness(0.4) opacity(0.3); pointer-events: auto; /* cursor: pointer; Will be set by theme cursor rules */ }
+#matrix-bg { z-index: -1; filter: brightness(0.4) opacity(0.3); pointer-events: auto; }
 #matrix-splash {
     z-index: 1000; background: #1a1a1a; opacity: 1;
     transition: opacity 1s ease-in-out, background 0.5s ease-in-out;
     display: flex; align-items: center; justify-content: center;
 }
 
-#wave-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; display: none; }
+#wave-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; display: none;
+    transform: translateZ(0); /* Hardware acceleration hint */
+}
 :root[data-theme="light"] #matrix-bg { display: none; }
 :root[data-theme="light"] #wave-bg { display: block; filter: brightness(1.0) opacity(0.6); }
 :root[data-theme="red"] #matrix-bg { filter: brightness(0.8) opacity(0.5); }
@@ -65,31 +69,27 @@ body {
 
 #password-prompt {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1001;
-    display: none; /* JS toggles to flex with .visible class */
+    display: none;
     flex-direction: column; align-items: center; padding: 2rem;
     color: var(--accent); font-size: clamp(1.2rem, 4vw, 1.4rem);
     opacity: 0; transition: opacity 0.5s ease-in-out;
-    background-color: transparent; /* Ensure no default background interferes */
+    background-color: transparent;
 }
 #password-prompt.visible { display: flex; opacity: 1; }
 
 #password-input {
     background: transparent; border: none;
-    color: var(--accent); /* Fallback will be set below if needed */
+    color: var(--accent);
     font-family: 'Fira Code', monospace; font-size: clamp(1rem, 3.5vw, 1.2rem);
     text-align: center; outline: none; margin-top: 1rem; width: 100%; max-width: 300px;
-    caret-color: var(--accent); /* JS also sets this to transparent initially */
-    /* cursor: text; /* Base cursor for text input */
+    caret-color: var(--accent);
 }
-/* Fallback color for password input if CSS vars fail early */
 html:not([data-theme="light"]):not([data-theme="red"]) #password-input,
 html[data-theme="dark"] #password-input {
-    color: #4ade80; /* Fallback green for dark-like themes */
-    caret-color: #4ade80;
+    color: #4ade80; caret-color: #4ade80;
 }
 html[data-theme="light"] #password-input {
-    color: #8e24aa; /* Fallback purple for light theme */
-    caret-color: #8e24aa;
+    color: #8e24aa; caret-color: #8e24aa;
 }
 
 
@@ -124,7 +124,6 @@ html[data-theme="light"] #password-input {
 
 .theme-toggle {
     position: absolute; top: 1rem; right: 1rem; background: none; border: none;
-    /* cursor: pointer; Will be set by theme cursor rules */
     z-index: 20; padding: 0.5rem; min-width: 44px; min-height: 44px;
     display: flex; align-items: center; justify-content: center;
     opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 0s;
@@ -143,12 +142,12 @@ html[data-theme="light"] #password-input {
     transition: opacity 0.2s ease, transform 0.2s ease; white-space: pre;
 }
 @keyframes waveFlow { 0% { transform: translateX(50px) rotate(10deg); opacity: 0; } 50% { transform: translateX(-10px) rotate(-5deg); opacity: 1; } 100% { transform: translateX(0) rotate(0); opacity: 1; } }
-.cursor { /* This is the blinking text cursor in typing effects */
+.cursor {
     display: inline-block; color: var(--accent); font-size: clamp(1.4rem, 5vw, 1.8rem);
     line-height: 1; vertical-align: bottom; width: 0.5em;
     animation: blinkCursor 0.7s infinite; transition: color 0.5s ease-in-out;
 }
-:root[data-theme="light"] .cursor { display: none; } /* Hides JS typing cursor in light mode */
+:root[data-theme="light"] .cursor { display: none; }
 @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
 
@@ -201,14 +200,13 @@ html[data-theme="light"] #password-input {
 @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
 .project:hover { transform: scale(1.05); box-shadow: 0 0 8px var(--accent); }
-.project a { display: block; padding: 0.5rem; color: inherit; text-decoration: none; position: relative; z-index: 1; /* cursor: pointer; Will be set by theme cursor rules */ }
+.project a { display: block; padding: 0.5rem; color: inherit; text-decoration: none; position: relative; z-index: 1; }
 .project a h3 { color: var(--accent); margin-bottom: 0.5rem; font-size: clamp(1.1rem, 4vw, 1.2rem); transition: color 0.5s ease-in-out; }
 .project a p { font-size: clamp(0.85rem, 3.5vw, 0.9rem); color: var(--text-color); transition: color 0.5s ease-in-out; }
 
 .filter-buttons { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1rem; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 0.4s; }
 .filter-btn {
     border: 1px solid var(--accent); background: transparent; color: var(--accent); padding: 0.5rem 1rem; border-radius: 5px;
-    /* cursor: pointer; Will be set by theme cursor rules */
     font-size: clamp(0.8rem, 3vw, 0.9rem);
     transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.5s ease-in-out, border-color 0.5s ease-in-out;
 }
@@ -217,10 +215,10 @@ html[data-theme="light"] #password-input {
 :root[data-theme="light"][data-theme-temp="light"] .filter-btn:hover,
 :root[data-theme="light"][data-theme-temp="light"] .filter-btn.active { background: rgba(255, 153, 153, 0.3); box-shadow: 0 0 10px rgba(255, 153, 153, 0.5); }
 
-a:not(.project a) { color: var(--accent); transition: color 0.5s ease-in-out; /* cursor: pointer; Will be set by theme cursor rules */ }
+a:not(.project a) { color: var(--accent); transition: color 0.5s ease-in-out; }
 .socials { display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 1rem; position: relative; z-index: 10; }
 .socials-icons { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 0.8s; }
-.socials a { display: inline-flex; align-items: center; transition: transform 0.3s ease; text-decoration: none; padding: 0.5rem; min-width: 44px; min-height: 44px; /* cursor: pointer; Will be set by theme cursor rules */ }
+.socials a { display: inline-flex; align-items: center; transition: transform 0.3s ease; text-decoration: none; padding: 0.5rem; min-width: 44px; min-height: 44px; }
 .socials a:not(:hover) { color: var(--accent); }
 .socials a svg { width: 2rem; height: 2rem; fill: var(--accent); transition: fill 0.5s ease-in-out; }
 .socials a .fallback { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
@@ -230,7 +228,6 @@ a:not(.project a) { color: var(--accent); transition: color 0.5s ease-in-out; /*
 @keyframes slideUpFooter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 
-/* IP Warning Popup Styles */
 #ip-warning-popup {
     position: fixed;
     top: 50%;
@@ -242,7 +239,7 @@ a:not(.project a) { color: var(--accent); transition: color 0.5s ease-in-out; /*
     border-radius: 10px;
     padding: 2rem;
     z-index: 2000;
-    display: none; /* JS sets to 'flex' when visible */
+    display: none;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -251,61 +248,25 @@ a:not(.project a) { color: var(--accent); transition: color 0.5s ease-in-out; /*
     max-width: 90%;
     width: 400px;
 }
-
-#ip-warning-content h2 {
-    margin-top: 0;
-    font-size: 1.8rem;
-    color: #ff4f4f;
-}
-
-#ip-warning-content p {
-    margin: 0.5rem 0;
-    font-size: 0.9rem;
-}
-
-#ip-warning-content strong {
-    color: #ff8f8f;
-}
-
-#ip-warning-content .initiating-protocol {
-    margin-top: 1.5rem;
-    font-style: italic;
-    color: #ffcc00;
-}
-
+#ip-warning-content h2 { margin-top: 0; font-size: 1.8rem; color: #ff4f4f; }
+#ip-warning-content p { margin: 0.5rem 0; font-size: 0.9rem; }
+#ip-warning-content strong { color: #ff8f8f; }
+#ip-warning-content .initiating-protocol { margin-top: 1.5rem; font-style: italic; color: #ffcc00; }
 #warning-ok-button {
-    background-color: #ff0000;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 5px;
-    /* cursor: pointer; Will be set by theme cursor rules */
-    font-family: 'Fira Code', monospace;
-    font-size: 1rem;
-    margin-top: 1.5rem;
-    transition: background-color 0.3s ease;
+    background-color: #ff0000; color: white; border: none;
+    padding: 0.75rem 1.5rem; border-radius: 5px;
+    font-family: 'Fira Code', monospace; font-size: 1rem;
+    margin-top: 1.5rem; transition: background-color 0.3s ease;
 }
-#warning-ok-button:hover {
-    background-color: #cc0000;
-}
+#warning-ok-button:hover { background-color: #cc0000; }
 
 
 /* ===== CUSTOM CURSOR STYLES ===== */
 /* Replace 'path/to/your/...' with actual paths or data URLs */
+html[data-theme="dark"] body { cursor: url('path/to/your/dark-default.cur'), auto; }
+html[data-theme="light"] body { cursor: url('path/to/your/light-default.cur'), auto; }
+body { cursor: auto; }
 
-/* Default cursor (for body and general areas) */
-html[data-theme="dark"] body {
-    cursor: url('path/to/your/dark-default.cur'), auto;
-}
-html[data-theme="light"] body {
-    cursor: url('path/to/your/light-default.cur'), auto;
-}
-/* Fallback if no theme is set or for initial load (optional, browser default is 'auto') */
-body {
-    cursor: auto;
-}
-
-/* Pointer cursor (for interactive elements like links and buttons) */
 html[data-theme="dark"] a,
 html[data-theme="dark"] button,
 html[data-theme="dark"] input[type="button"],
@@ -315,7 +276,7 @@ html[data-theme="dark"] .filter-btn,
 html[data-theme="dark"] .project a,
 html[data-theme="dark"] .socials a,
 html[data-theme="dark"] .theme-toggle,
-html[data-theme="dark"] #matrix-bg, /* For clickable matrix bg */
+html[data-theme="dark"] #matrix-bg,
 html[data-theme="dark"] #warning-ok-button,
 html[data-theme="dark"] [role="button"],
 html[data-theme="dark"] [role="link"],
@@ -332,7 +293,7 @@ html[data-theme="light"] .filter-btn,
 html[data-theme="light"] .project a,
 html[data-theme="light"] .socials a,
 html[data-theme="light"] .theme-toggle,
-html[data-theme="light"] #matrix-bg, /* For clickable matrix bg */
+html[data-theme="light"] #matrix-bg,
 html[data-theme="light"] #warning-ok-button,
 html[data-theme="light"] [role="button"],
 html[data-theme="light"] [role="link"],
@@ -340,17 +301,12 @@ html[data-theme="light"] [role="tab"] {
     cursor: url('path/to/your/light-pointer.cur'), pointer;
 }
 
-/* Fallback pointer if no theme is set (optional, browser default is 'pointer') */
 a, button, input[type="button"], input[type="submit"], input[type="reset"],
 .filter-btn, .project a, .socials a, .theme-toggle, #matrix-bg, #warning-ok-button,
 [role="button"], [role="link"], [role="tab"] {
-    cursor: pointer;
+    cursor: pointer; /* Fallback */
 }
 
-
-/* Text input cursor (for text fields) */
-/* Browsers are often strict about overriding the 'text' (I-beam) cursor for input fields. */
-/* This might primarily affect the mouse pointer *over* the field, not the caret *inside*. */
 html[data-theme="dark"] input[type="text"],
 html[data-theme="dark"] textarea {
     cursor: url('path/to/your/dark-text-input.cur'), text;
@@ -359,20 +315,8 @@ html[data-theme="light"] input[type="text"],
 html[data-theme="light"] textarea {
     cursor: url('path/to/your/light-text-input.cur'), text;
 }
-/* Fallback text cursor */
-input[type="text"], textarea {
-    cursor: text;
-}
-
-/* Special handling for the password input if its appearance is 'invisible' */
-#password-input {
-    /* If its text is transparent and borderless, a text cursor might look odd. */
-    /* 'default' might be better, or a custom one if you have it. */
-    /* JS handles making its typed text and caret transparent, so this is for the hover state. */
-    /* cursor: default; */ /* Example if 'text' cursor is not desired when "invisible" */
-    cursor: text; /* Keep as text to indicate it's an input field */
-}
-
+input[type="text"], textarea { cursor: text; /* Fallback */ }
+#password-input { cursor: text; }
 /* ===== END CUSTOM CURSOR STYLES ===== */
 
 
@@ -381,13 +325,16 @@ input[type="text"], textarea {
     .typing { font-size: clamp(1rem, 5vw, 1.2rem); margin-top: 1.5rem; }
     .header h1 { font-size: clamp(1.2rem, 5vw, 1.5rem); letter-spacing: 8px; word-spacing: 10px; }
     .section { margin-bottom: 1.5rem; } .section h2 { font-size: clamp(1.2rem, 4.5vw, 1.5rem); }
+
+    #projects.section > p:not(.typing) { margin-bottom: 1.5rem; } /* Increased spacing */
+
     .project { margin: 0.8rem 0; padding: 0.8rem; }
     .filter-buttons { flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
     .filter-btn { padding: 0.4rem 0.8rem; } .socials { margin-top: 1.5rem; }
     .socials-icons { gap: 1rem; } .socials a svg { width: 1.8rem; height: 1.8rem; }
     .theme-toggle { top: 0.5rem; right: 0.5rem; } .theme-toggle svg { width: 1.2rem; height: 1.2rem; }
     .project:hover { transform: scale(1.03); }
-    .cursor { font-size: clamp(1rem, 5vw, 1.2rem); } /* Blinking text cursor size */
+    .cursor { font-size: clamp(1rem, 5vw, 1.2rem); }
     #password-prompt { padding: 1.5rem; font-size: clamp(1rem, 3.5vw, 1.2rem); width: 90%; max-width: 350px; }
     #password-input { font-size: clamp(0.9rem, 3vw, 1rem); max-width: 250px; }
     #hacking-code { height: 35vh; font-size: clamp(0.6rem, 2vw, 0.8rem); }
@@ -395,15 +342,16 @@ input[type="text"], textarea {
     #ip-warning-content h2 { font-size: 1.5rem; }
     #ip-warning-content p { font-size: 0.8rem; }
     #warning-ok-button { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
-
 }
+
 @media (max-width: 480px) {
     body { padding: 0.5rem; } .header { margin-bottom: 1.5rem; }
     .header h1 { letter-spacing: 6px; word-spacing: 8px; font-size: clamp(1rem, 4vw, 1.2rem); }
     .section { margin-bottom: 1rem; } .section h2 { font-size: 1.1rem; }
     .section p:not(.typing) { font-size: 0.8rem; }
+    #projects.section > p:not(.typing) { margin-bottom: 1.2rem; } /* Spacing for very small screens */
     .typing { font-size: clamp(0.9rem, 4vw, 1rem); }
-    .cursor { font-size: clamp(0.9rem, 4vw, 1rem); } /* Blinking text cursor size */
+    .cursor { font-size: clamp(0.9rem, 4vw, 1rem); }
     .project a h3 { font-size: 1rem; } .project a p { font-size: 0.75rem; }
     .filter-buttons { flex-direction: column; align-items: center; }
     .filter-btn { width: 100%; max-width: 200px; text-align: center; }
@@ -413,23 +361,35 @@ input[type="text"], textarea {
     #hacking-code { height: 30vh; font-size: clamp(0.5rem, 1.8vw, 0.7rem); padding: 0.5rem; }
     .socials a svg { width: 1.5rem; height: 1.5rem; }
 }
+
 @media (hover: none) {
     .project:hover { transform: scale(1.02); box-shadow: 0 0 6px var(--accent); }
     .socials a:hover { transform: scale(1.1); }
 }
+
 @media (prefers-reduced-motion: reduce) {
     .header h1, .section, .project, .section h2, .section h2::after, .section p, .section p:not(.typing),
     .socials, .socials a, .footer, .cursor, .header h1::before, .typing, .typing::before,
     #matrix-bg, #wave-bg, #wave-transition, #password-prompt, #hacking-code,
     :root[data-theme="light"] .header h1 span, :root[data-theme="light"] .typing span,
-    .theme-toggle, .filter-buttons, .socials-icons, #matrix-splash { animation: none !important; transition: none !important; }
+    .theme-toggle, .filter-buttons, .socials-icons, #matrix-splash, #ip-warning-popup { /* Added #ip-warning-popup */
+        animation: none !important;
+        transition: none !important;
+    }
 
     .header h1, .section, .project, .socials, .footer, .typing, .theme-toggle, .filter-buttons, .socials-icons,
-    .section p:not(.typing), #matrix-splash, #password-prompt.visible { opacity: 1 !important; transform: none !important; }
+    .section p:not(.typing), #matrix-splash,
+    #password-prompt.visible, #ip-warning-popup[style*="display: flex"] /* Match JS show style */ {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 
-    .project.hidden { display: none !important; opacity: 0 !important; height: 0 !important; padding: 0 !important; margin: 0 !important; overflow: hidden !important; border: none !important; }
+    .project.hidden {
+        display: none !important; opacity: 0 !important; height: 0 !important;
+        padding: 0 !important; margin: 0 !important; overflow: hidden !important; border: none !important;
+    }
     #matrix-bg { filter: brightness(0.1) opacity(0.05) !important; }
-    #wave-bg { filter: brightness(1.0) opacity(0.6) !important; }
-    .cursor { opacity: 1 !important; animation: none !important; } /* JS Blinking Cursor */
+    #wave-bg { filter: brightness(1.0) opacity(0.6) !important; animation: none !important; } /* Stop wave pulse */
+    .cursor { opacity: 1 !important; animation: none !important; }
     #matrix-splash.hidden { opacity: 0 !important; pointer-events: none !important; display: none !important; }
 }
