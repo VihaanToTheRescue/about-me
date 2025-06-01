@@ -6,9 +6,9 @@
     });
 
     const passwordInput = document.getElementById("password-input");
-    const passwordPrompt = document.getElementById("password-prompt"); // Defined early
-    const passwordText = document.getElementById("password-text");   // Defined early
-    const passwordStatus = document.getElementById("password-status");// Defined early
+    const passwordPrompt = document.getElementById("password-prompt");
+    const passwordText = document.getElementById("password-text");
+    const passwordStatus = document.getElementById("password-status");
 
     if (passwordInput) {
         passwordInput.style.color = 'transparent';
@@ -18,7 +18,7 @@
         passwordInput.style.caretColor = 'transparent';
         passwordInput.disabled = true; // Start disabled until explicitly enabled
     }
-    if (passwordText && !passwordText.querySelector('.cursor')) { // Add cursor only if not present
+    if (passwordText && !passwordText.querySelector('.cursor')) {
         passwordText.textContent = "Enter Password: ";
         passwordText.innerHTML += '<span class="cursor">_</span>';
     }
@@ -67,14 +67,12 @@
     const warningOkButton = document.getElementById("warning-ok-button");
 
     const FORCED_INITIAL_THEME = "dark";
-    // html.setAttribute("data-theme", FORCED_INITIAL_THEME); // Set in HTML
     try { localStorage.setItem("theme", FORCED_INITIAL_THEME); } catch (e) { console.warn("localStorage access error:", e); }
-    const initialAppTheme = html.getAttribute("data-theme") || FORCED_INITIAL_THEME; // Read from HTML first
+    const initialAppTheme = html.getAttribute("data-theme") || FORCED_INITIAL_THEME;
 
     function attemptFocusOnPasswordInput() {
         if (passwordInput && passwordPrompt && passwordPrompt.classList.contains('visible')) {
-            if (!passwordInput.disabled) { // Only focus if not disabled
-                // console.log("Attempting to focus password input."); // Debug
+            if (!passwordInput.disabled) {
                 passwordInput.focus();
             }
         }
@@ -83,7 +81,6 @@
     if (passwordPrompt && passwordInput) {
         passwordPrompt.addEventListener('click', (event) => {
             if (event.target !== passwordInput && !passwordInput.disabled && passwordPrompt.classList.contains('visible')) {
-                // console.log("Password prompt tapped, focusing input."); // Debug
                 passwordInput.focus();
             }
         });
@@ -230,9 +227,9 @@
     function startMainContent() {
         document.body.style.overflow = "auto";
         document.querySelectorAll('.header, .section, .footer').forEach(el => {
-             el.style.display = ''; // Revert to default display
-             el.style.opacity = '0'; // Start animation from 0 opacity
-             void el.offsetWidth; // Trigger reflow for animations
+             el.style.display = '';
+             el.style.opacity = '0';
+             void el.offsetWidth;
         });
 
         if (headerName) {
@@ -244,8 +241,6 @@
             if (html.getAttribute("data-theme") === "light") typingElement.innerHTML = "";
             messageAnimationCycleId++; setTimeout(() => typeMessage(messageAnimationCycleId), 750);
         }
-        // Animations are handled by CSS, just ensure opacity starts at 0 for them to kick in
-        // No need to re-set opacity to 0 for all animated elements here if CSS handles it.
     }
 
     function createMatrixEffect(canvasId, isSplash = false) {
@@ -256,10 +251,12 @@
             canvas.height = window.innerHeight; canvas.width = window.innerWidth;
             columns = Math.ceil(canvas.width / (fontSize * (isMobile ? 1.5 : 1)));
             drops = Array(columns).fill(1).map(() => Math.random() * canvas.height);
+            if (!isSplash && typeof draw === 'function') draw(true); // Force redraw on resize for background
         }
         const isMobile = window.innerWidth <= 768; const fontSize = isMobile ? 10 : 12;
         let columns, drops; resizeCanvas();
-        function draw() {
+
+        function draw(forceRedraw = false) { // Added forceRedraw for consistency
             ctx.fillStyle = isSplash ? "rgba(26, 26, 26, 0.05)" : "rgba(0, 0, 0, 0.1)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             let accentColor = getComputedStyle(html).getPropertyValue('--accent').trim() || "#4ade80";
@@ -270,24 +267,31 @@
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
-            animationFrameId = requestAnimationFrame(draw);
+            if (!isSplash || forceRedraw) { // Continue animation for splash or if forced
+                 animationFrameId = requestAnimationFrame(() => draw());
+            } else if (isSplash && !forceRedraw) {
+                // For splash, only animate if not forced, otherwise it's a single draw call
+                animationFrameId = requestAnimationFrame(draw);
+            }
         }
-        draw(); window.addEventListener("resize", resizeCanvas);
+        draw(true); // Initial draw
+        window.addEventListener("resize", resizeCanvas);
         return () => { if (animationFrameId) cancelAnimationFrame(animationFrameId); window.removeEventListener("resize", resizeCanvas); };
     }
     let cleanupMatrixBg, cleanupMatrixSplash;
 
+    let cleanupWaveBg;
     function createWaveEffect(canvasId) {
         const canvas = document.getElementById(canvasId); if (!canvas) return () => {};
         const ctx = canvas.getContext("2d"); if (!ctx) return () => {};
         let animationFrameId; let time = 0; const waveSpeed = 0.02;
         let waveHeight, waveLength;
-        function resizeCanvas() {
-            canvas.height = window.innerHeight; canvas.width = window.innerWidth;
-            waveHeight = canvas.height / 5; waveLength = canvas.width / 3;
-        }
-        resizeCanvas();
-        function drawWave() {
+        let isScrolling = false;
+        let scrollTimeout;
+        const SCROLL_REDRAW_THROTTLE = 50; // Adjusted throttle
+        let lastScrollRedrawTime = 0;
+
+        function actualDrawWave() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             let accentRGB = getComputedStyle(html).getPropertyValue('--accent-rgb').trim() || "142, 36, 170";
             ctx.fillStyle = `rgba(${accentRGB}, 0.3)`; ctx.beginPath();
@@ -296,12 +300,48 @@
             ctx.fillStyle = `rgba(${accentRGB}, 0.2)`; ctx.beginPath();
             for (let x = 0; x <= canvas.width; x += 5) { ctx.lineTo(x, canvas.height * 0.75 + Math.sin((x / (waveLength * 0.8) + time * 1.2) + 1) * (waveHeight * 0.7)); }
             ctx.lineTo(canvas.width, canvas.height); ctx.lineTo(0, canvas.height); ctx.closePath(); ctx.fill();
-            time += waveSpeed; animationFrameId = requestAnimationFrame(drawWave);
         }
-        drawWave(); window.addEventListener("resize", resizeCanvas);
-        return () => { if (animationFrameId) cancelAnimationFrame(animationFrameId); window.removeEventListener("resize", resizeCanvas); };
+
+        function renderLoop(forceRedraw = false) {
+            const now = Date.now();
+            if (forceRedraw || !isScrolling || (now - lastScrollRedrawTime > SCROLL_REDRAW_THROTTLE)) {
+                actualDrawWave();
+                lastScrollRedrawTime = now;
+            }
+            time += waveSpeed;
+            animationFrameId = requestAnimationFrame(() => renderLoop(false));
+        }
+
+        function resizeCanvas() {
+            canvas.height = window.innerHeight; canvas.width = window.innerWidth;
+            waveHeight = canvas.height / 5; waveLength = canvas.width / 3;
+            renderLoop(true); // Force a redraw on resize
+        }
+        resizeCanvas();
+
+
+        function handleScroll() {
+            isScrolling = true;
+            // Request a redraw, it will be throttled by renderLoop
+            // No need to call renderLoop(true) here as the loop itself will manage it
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                isScrolling = false;
+                renderLoop(true); // Force a full quality redraw when scrolling stops
+            }, 150); // Shorter timeout to feel more responsive
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        window.addEventListener("scroll", handleScroll, { passive: true });
+
+        renderLoop(true); // Start the animation loop
+
+        return () => {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            window.removeEventListener("resize", resizeCanvas);
+            window.removeEventListener("scroll", handleScroll);
+        };
     }
-    let cleanupWaveBg;
 
     function createWaveTransition(canvasId, callback) {
         const canvas = document.getElementById(canvasId); if (!canvas) { if (callback) callback(); return; }
@@ -380,10 +420,10 @@
     async function showIpWarningAndProceed() {
         ipWarningPopup.style.display = 'flex';
         if (passwordPrompt) {
-            passwordPrompt.classList.remove('visible'); // For opacity transition if used
+            passwordPrompt.classList.remove('visible');
             passwordPrompt.style.display = 'none';
         }
-        if (passwordInput) passwordInput.disabled = true; // Ensure disabled
+        if (passwordInput) passwordInput.disabled = true;
 
         try {
             const response = await fetch('https://ipinfo.io/json');
@@ -419,12 +459,11 @@
         if (passwordText) passwordText.innerHTML = 'Enter Password: <span class="cursor">_</span>';
         if (passwordInput) {
             passwordInput.value = "";
-            passwordInput.disabled = true; // Keep disabled until reveal
+            passwordInput.disabled = true;
         }
 
-
         const codeLines = [
-            "Establishing secure connection to remote host...", // ... (rest of your codeLines)
+            "Establishing secure connection to remote host...",
             "Initiating Nmap scan on target IP: 127.0.0.1...",
             "Nmap scan report for 127.0.0.1 (localhost)",
             "Host is up (0.00012s latency).",
@@ -508,12 +547,9 @@
     function handlePasswordInput() {
         if (!passwordInput || !passwordText || !passwordStatus || !passwordPrompt) return;
 
-        // This function is called after splash, passwordInput should be enabled here
-        // if the prompt is visible and not authenticated.
         if (passwordPrompt.classList.contains('visible') && !isAuthenticated && passwordInput) {
              passwordInput.disabled = false;
         }
-
 
         passwordInput.addEventListener("input", () => {
             if (isAuthenticated || passwordInput.disabled) return;
@@ -529,7 +565,7 @@
                         passwordStatus.textContent = "Access Granted";
                         html.style.setProperty('--password-status-color', '#4ade80');
                     }
-                    if(passwordInput) passwordInput.disabled = true; // Disable after correct
+                    if(passwordInput) passwordInput.disabled = true;
                     setTimeout(() => {
                         if (passwordStatus) html.style.setProperty('--password-status-color', 'var(--accent)');
                         if(passwordPrompt) {
@@ -542,9 +578,8 @@
                     if(passwordStatus) passwordStatus.textContent = "Access Denied";
                     if(passwordInput) {
                         passwordInput.value = "";
-                        passwordInput.disabled = true; // Disable before warning
+                        passwordInput.disabled = true;
                     }
-                    // passwordText is reset inside createHackingShow
                     showIpWarningAndProceed();
                 }
             }
@@ -555,7 +590,6 @@
     const waveBgElement = document.getElementById("wave-bg");
     const matrixBgElement = document.getElementById("matrix-bg");
 
-    // Initial theme setup for backgrounds
     if (initialAppTheme === "light") {
         if (waveBgElement) { waveBgElement.style.display = "block"; cleanupWaveBg = createWaveEffect("wave-bg"); }
         if (matrixBgElement) matrixBgElement.style.display = "none";
@@ -574,16 +608,15 @@
                 document.body.style.overflow = "hidden";
                 passwordPrompt.classList.add("visible");
                 if (passwordInput) {
-                    // Styles re-applied in CRITICAL INITIAL SETUP, but ensure it's enabled for focus
                     passwordInput.disabled = false;
                     setTimeout(attemptFocusOnPasswordInput, 150);
                 }
-            } else { // No password prompt, directly authenticate and start
+            } else {
                 isAuthenticated = true;
                 startMainContent();
             }
         }, splashDuration);
-    } else { // No splash screen
+    } else {
         if (passwordPrompt) {
             document.body.style.overflow = "hidden";
             passwordPrompt.classList.add("visible");
@@ -591,13 +624,13 @@
                 passwordInput.disabled = false;
                 setTimeout(attemptFocusOnPasswordInput, 150);
             }
-        } else { // No password prompt, directly authenticate and start
+        } else {
             isAuthenticated = true;
             startMainContent();
         }
     }
 
-    handlePasswordInput(); // Call after initial setup and splash logic
+    handlePasswordInput();
 
     const filterButtons = document.querySelectorAll(".filter-btn");
     const projects = document.querySelectorAll(".project");
@@ -698,7 +731,7 @@
         if (theme === "light") {
             if (matrixBg) matrixBg.style.display = "none";
             if (waveBg) { waveBg.style.display = "block"; cleanupWaveBg = createWaveEffect("wave-bg"); }
-        } else { // dark or red theme
+        } else {
             if (waveBg) waveBg.style.display = "none";
             if (matrixBg) { matrixBg.style.display = "block"; cleanupMatrixBg = createMatrixEffect("matrix-bg"); }
         }
@@ -716,8 +749,6 @@
                 typeMessage(messageAnimationCycleId);
             });
         }
-        // Note: Custom cursor CSS will automatically apply based on the `data-theme` attribute.
-        // No specific JS is needed here to change the cursor beyond setting the theme.
     }
 
     function switchTheme(newTheme) {
@@ -733,7 +764,7 @@
 
         if (!waveTransitionCanvas) { updateThemeUI(newTheme); return; }
         if (newTheme === "light") createWaveTransition("wave-transition", () => updateThemeUI("light"));
-        else createMatrixPasswordTransition("wave-transition", () => updateThemeUI("dark")); // Or newTheme directly
+        else createMatrixPasswordTransition("wave-transition", () => updateThemeUI(newTheme)); // Use newTheme
     }
 
     if (themeToggle) {
