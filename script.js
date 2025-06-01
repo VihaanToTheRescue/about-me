@@ -251,12 +251,12 @@
             canvas.height = window.innerHeight; canvas.width = window.innerWidth;
             columns = Math.ceil(canvas.width / (fontSize * (isMobile ? 1.5 : 1)));
             drops = Array(columns).fill(1).map(() => Math.random() * canvas.height);
-            if (!isSplash && typeof draw === 'function') draw(true); // Force redraw on resize for background
+            if (typeof draw === 'function') draw(true); // Force redraw on resize
         }
         const isMobile = window.innerWidth <= 768; const fontSize = isMobile ? 10 : 12;
         let columns, drops; resizeCanvas();
 
-        function draw(forceRedraw = false) { // Added forceRedraw for consistency
+        function draw(forceRedraw = false) {
             ctx.fillStyle = isSplash ? "rgba(26, 26, 26, 0.05)" : "rgba(0, 0, 0, 0.1)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             let accentColor = getComputedStyle(html).getPropertyValue('--accent').trim() || "#4ade80";
@@ -267,14 +267,9 @@
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
-            if (!isSplash || forceRedraw) { // Continue animation for splash or if forced
-                 animationFrameId = requestAnimationFrame(() => draw());
-            } else if (isSplash && !forceRedraw) {
-                // For splash, only animate if not forced, otherwise it's a single draw call
-                animationFrameId = requestAnimationFrame(draw);
-            }
+            animationFrameId = requestAnimationFrame(() => draw()); // Continue animation loop
         }
-        draw(true); // Initial draw
+        draw(true);
         window.addEventListener("resize", resizeCanvas);
         return () => { if (animationFrameId) cancelAnimationFrame(animationFrameId); window.removeEventListener("resize", resizeCanvas); };
     }
@@ -288,7 +283,7 @@
         let waveHeight, waveLength;
         let isScrolling = false;
         let scrollTimeout;
-        const SCROLL_REDRAW_THROTTLE = 50; // Adjusted throttle
+        const SCROLL_REDRAW_THROTTLE = 50;
         let lastScrollRedrawTime = 0;
 
         function actualDrawWave() {
@@ -304,37 +299,41 @@
 
         function renderLoop(forceRedraw = false) {
             const now = Date.now();
+            let didDraw = false;
+
             if (forceRedraw || !isScrolling || (now - lastScrollRedrawTime > SCROLL_REDRAW_THROTTLE)) {
                 actualDrawWave();
                 lastScrollRedrawTime = now;
+                didDraw = true;
             }
-            time += waveSpeed;
+
+            if (!isScrolling || didDraw) { // Only increment time if not scrolling OR if a draw occurred
+                time += waveSpeed;
+            }
+
             animationFrameId = requestAnimationFrame(() => renderLoop(false));
         }
 
         function resizeCanvas() {
             canvas.height = window.innerHeight; canvas.width = window.innerWidth;
             waveHeight = canvas.height / 5; waveLength = canvas.width / 3;
-            renderLoop(true); // Force a redraw on resize
+            renderLoop(true);
         }
         resizeCanvas();
 
-
         function handleScroll() {
             isScrolling = true;
-            // Request a redraw, it will be throttled by renderLoop
-            // No need to call renderLoop(true) here as the loop itself will manage it
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
                 isScrolling = false;
-                renderLoop(true); // Force a full quality redraw when scrolling stops
-            }, 150); // Shorter timeout to feel more responsive
+                renderLoop(true);
+            }, 150);
         }
 
         window.addEventListener("resize", resizeCanvas);
         window.addEventListener("scroll", handleScroll, { passive: true });
 
-        renderLoop(true); // Start the animation loop
+        renderLoop(true);
 
         return () => {
             if (animationFrameId) cancelAnimationFrame(animationFrameId);
@@ -639,14 +638,23 @@
             filterButtons.forEach(btn => { btn.classList.remove("active"); btn.setAttribute("aria-selected", "false"); });
             button.classList.add("active"); button.setAttribute("aria-selected", "true");
             const filter = button.dataset.filter;
+
             projects.forEach(project => {
-                const category = project.dataset.category;
-                const matchesFilter = (filter === "all" || category === filter);
+                const projectCategories = project.dataset.category.split(' ');
+                const matchesFilter = (filter === "all" || projectCategories.includes(filter));
+
                 project.classList.toggle("hidden", !matchesFilter);
-                if (matchesFilter) { void project.offsetWidth; }
+                if (matchesFilter) {
+                    void project.offsetWidth;
+                }
             });
         });
-        button.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); button.click(); } });
+        button.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                button.click();
+            }
+        });
     });
 
     const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -764,7 +772,7 @@
 
         if (!waveTransitionCanvas) { updateThemeUI(newTheme); return; }
         if (newTheme === "light") createWaveTransition("wave-transition", () => updateThemeUI("light"));
-        else createMatrixPasswordTransition("wave-transition", () => updateThemeUI(newTheme)); // Use newTheme
+        else createMatrixPasswordTransition("wave-transition", () => updateThemeUI(newTheme));
     }
 
     if (themeToggle) {
